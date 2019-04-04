@@ -2,7 +2,6 @@ package Alerts;
 
 import org.apache.commons.lang.time.DateUtils;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,8 +13,10 @@ public abstract class Alert {
     private String expirationInstant;
     private String description;
     private int duration;
+    private String originVehicle;
 
-    public Alert(double x, double y, String creationInstant){
+    public Alert(String originVehicle, double x, double y, String creationInstant){
+        this.originVehicle = originVehicle;
         this.x = x;
         this.y = y;
         this.creationInstant = creationInstant;
@@ -71,6 +72,19 @@ public abstract class Alert {
         Date expirationDate = DateUtils.addMinutes(creationDate, duration);
         expirationInstant = format.format(expirationDate);
     }
+
+    public void setExpirationInstant(String expirationInstant) {
+        this.expirationInstant = expirationInstant;
+    }
+
+    public String getOriginVehicle() {
+        return originVehicle;
+    }
+
+    public void setOriginVehicle(String originVehicle) {
+        this.originVehicle = originVehicle;
+    }
+
 
     public boolean isExpired() throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

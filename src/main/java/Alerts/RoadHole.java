@@ -6,9 +6,15 @@ import com.google.gson.GsonBuilder;
 public class RoadHole extends Alert {
     private String depth;
 
-    public RoadHole(double x, double y, String timestamp, String depth){
-        super(x, y, timestamp);
+    public RoadHole(String originVehicle, double x, double y, String timestamp, String depth){
+        super(originVehicle, x, y, timestamp);
         this.depth = depth;
+        this.setDescription(this.getClass().getSimpleName());
+    }
+
+    public RoadHole(RoadHole rh){
+        super(rh.getOriginVehicle(), rh.getX(), rh.getY(), rh.getCreationInstant());
+        depth = rh.getDepth();
         this.setDescription(this.getClass().getSimpleName());
     }
 
@@ -32,11 +38,17 @@ public class RoadHole extends Alert {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.getDescription()
+                + " " + super.getOriginVehicle()
                 + " " + super.getX()
                 + " " + super.getY()
                 + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
                 + " " + getDepth());
         return sb.toString();
+    }
+
+    @Override
+    public RoadHole clone(){
+        return new RoadHole(this);
     }
 }

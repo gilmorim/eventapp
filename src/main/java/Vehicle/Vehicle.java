@@ -73,9 +73,9 @@ public class Vehicle {
             reader.close();
             carDetails = line.split(" ");
 
-            this.setVin(carDetails[0]);
-            this.setBrand(carDetails[1]);
-            this.setModel(carDetails[2]);
+            this.setBrand(carDetails[0]);
+            this.setModel(carDetails[1]);
+            this.setVin(carDetails[2]);
             this.setYear(Integer.parseInt(carDetails[3]));
 
         } catch (FileNotFoundException e) {

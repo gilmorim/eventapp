@@ -7,13 +7,16 @@ import java.util.ArrayList;
 
 public class AlertList {
     private ArrayList<Alert> alertList;
+    private int cleanupInterval;
 
     public AlertList(){
         alertList = new ArrayList<Alert>();
+        cleanupInterval = 0;
     }
 
     public AlertList(AlertList al){
         alertList = al.getAlertList();
+        cleanupInterval = al.getCleanupInterval();
     }
 
     public ArrayList<Alert> getAlertList() {
@@ -24,16 +27,27 @@ public class AlertList {
         this.alertList = alertList;
     }
 
+    public int getCleanupInterval() {
+        return cleanupInterval;
+    }
+
+    public void setCleanupInterval(int cleanupInterval) {
+        this.cleanupInterval = cleanupInterval;
+    }
+
     public synchronized void addAlert(Alert a){
         alertList.add(a);
     }
 
-    public synchronized void  cleanExpired() throws ParseException {
+    public synchronized int cleanExpired() throws ParseException {
+        int countRemovedAlerts = 0;
         for(Alert a : alertList){
             if(a.isExpired()){
                 alertList.remove(a);
+                countRemovedAlerts++;
             }
         }
+        return countRemovedAlerts;
     }
 
     public String toString(){
