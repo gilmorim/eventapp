@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/* TODO: CHANGE DURATION TO THE INHERITED CLASSES, AND REMOVE FROM HERE, SINCE EACH ALERT HAS DIFFERENT LIFESPAN
+*   */
 public abstract class Alert {
     private double x;
     private double y;
@@ -66,6 +68,7 @@ public abstract class Alert {
         return expirationInstant;
     }
 
+    // TODO: SPAGHET CODE, THINK A BETTER WAY TO DO THIS
     public void setExpirationInstant() throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date creationDate = format.parse(creationInstant);
