@@ -4,16 +4,16 @@ import Alerts.Alert;
 
 public class GeneratedAlert {
      Alert alert;
-     int errorCode;
+     String errorMessage;
 
      public GeneratedAlert(){
          alert = null;
-         errorCode = 0;
+         errorMessage = null;
      }
 
-    public GeneratedAlert(Alert alert, int errorCode) {
+    public GeneratedAlert(Alert alert, String errorMessage) {
         this.alert = alert;
-        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
     }
 
     public Alert getAlert() {
@@ -24,11 +24,19 @@ public class GeneratedAlert {
         this.alert = alert;
     }
 
-    public int getErrorCode() {
-        return errorCode;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public void appendError(String s){
+         if(errorMessage == null){
+             errorMessage = s + "; ";
+         } else {
+             errorMessage += s + "; ";
+         }
     }
 }

@@ -4,13 +4,9 @@ import AlertList.AlertList;
 import Alerts.Alert;
 import Runnables.AlertRemover;
 import Utils.AlertDurationMap;
-import Utils.TimeStamper;
 import Vehicle.Vehicle;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.text.ParseException;
 import java.util.Timer;
 
@@ -26,12 +22,34 @@ public class TestClass{
 
         AlertFactory alertFactory = new AlertFactory();
 
-        // TODO: improve timestamper syntax
-        TimeStamper timeStamper = new TimeStamper();
+        File cleanupTimeFile = new File("./src/main/resources/alertcleanup.cfg");
+        if(!cleanupTimeFile.exists()){
+            System.out.println("Cleanup time file not found. Exiting...");
+            return;
+        }
 
-        // TODO: add file error control
-        BufferedReader timeReader = new BufferedReader(new FileReader("./src/main/resources/alertcleanup.cfg"));
-        int cleanupPeriod = Integer.parseInt(timeReader.readLine());
+        BufferedReader timeReader = new BufferedReader(new FileReader(cleanupTimeFile));
+        String cleanupStrAux;
+        int cleanupPeriod ;
+
+        // Read cleanup time file
+        try{
+            cleanupStrAux = timeReader.readLine();
+            cleanupPeriod = Integer.parseInt(cleanupStrAux);
+
+            // Make sure time range is between 1 and 30 minutes
+            if(cleanupPeriod < 60000 || cleanupPeriod > 1800000){
+                System.out.println("Cleanup time file bad range: make sure it is between 60000 and 1800000");
+                return;
+            }
+
+        } catch (IOException e){
+            System.out.println("Exiting with error reading time cleanup file: " + e.getMessage());
+            return;
+        } catch (NumberFormatException e){
+            System.out.println(e.getMessage() + ": exiting with error. Please guarantee that file contains a valid value ");
+            return;
+        }
 
         // scheduled task to clean expired alerts from queue
         // TODO: apply concurrency control to alert list access
@@ -53,26 +71,36 @@ public class TestClass{
                     break;
                 }
 
+                // TODO: this probably can be done better
                 // generate alert
                 case "alert" : {
-                    GeneratedAlert generatedAlert = new GeneratedAlert();
-                    generatedAlert = alertFactory.generate(
-                            options[1],
-                            Double.parseDouble(options[2]),
-                            Double.parseDouble(options[3]),
-                            v.getVin(),
-                            options[4]);
-
-                    Alert alert = generatedAlert.getAlert();
-                    int errorCode = generatedAlert.getErrorCode();
-
-                    if(errorCode == 0){
-                        alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));
-                        alert.setExpirationInstant();
-                        alertList.addAlert(alert);
-                        System.out.println("Alert added successfully: " + alert.toString());
+                    if(options.length < 5) {
+                        System.out.println("not enough arguments for alert option");
                     } else {
-                        System.out.println("error creating alert");
+                        GeneratedAlert generatedAlert = new GeneratedAlert();
+                        try{
+                            generatedAlert = alertFactory.generate(
+                                    options[1],
+                                    Double.parseDouble(options[2]),
+                                    Double.parseDouble(options[3]),
+                                    v.getVin(),
+                                    options[4]);
+
+                            Alert alert = generatedAlert.getAlert();
+                            String errorMessage = generatedAlert.getErrorMessage();
+
+                            if (errorMessage == null) {
+                                alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));
+                                alert.setExpirationInstant();
+                                alertList.addAlert(alert);
+                                System.out.println("Alert added successfully: " + alert.toString());
+                            } else {
+                                System.out.println("error creating alert: " + errorMessage);
+                            }
+                        } catch (NumberFormatException e){
+                            generatedAlert.appendError("invalid position");
+                            System.out.println("error creating alert: " + generatedAlert.getErrorMessage());
+                        }
                     }
                     break;
                 }
@@ -89,7 +117,7 @@ public class TestClass{
         }
     }
 
-    public static void displayHelp(){
+    private static void displayHelp(){
         System.out.println("helper menu");
     }
 }

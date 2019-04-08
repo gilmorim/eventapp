@@ -64,6 +64,7 @@ public class Vehicle {
         this.year = year;
     }
 
+    //TODO: proper file reading verification
     public void fromFile(String file) {
         String[] carDetails;
         try {

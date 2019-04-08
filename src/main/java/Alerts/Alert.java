@@ -92,4 +92,5 @@ public abstract class Alert {
         Date expirationDate = format.parse(expirationInstant);
         return currentDate.after(expirationDate);
     }
+
 }
