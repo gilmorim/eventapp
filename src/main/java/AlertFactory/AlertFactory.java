@@ -6,6 +6,7 @@ import Utils.TimeStamper;
 import java.util.Date;
 
 public class AlertFactory {
+
     public AlertFactory() {
     }
 
@@ -25,4 +26,3 @@ public class AlertFactory {
         return generatedAlert;
     }
 }
-
