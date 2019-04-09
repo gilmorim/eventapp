@@ -4,10 +4,12 @@ import AlertList.AlertList;
 import Alerts.Alert;
 import Runnables.AlertRemover;
 import Utils.AlertDurationMap;
+import Utils.Vars;
 import Vehicle.Vehicle;
 
 import java.io.*;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Timer;
 
 public class TestClass{
@@ -77,29 +79,44 @@ public class TestClass{
                     if(options.length < 5) {
                         System.out.println("not enough arguments for alert option");
                     } else {
-                        GeneratedAlert generatedAlert = new GeneratedAlert();
-                        try{
-                            generatedAlert = alertFactory.generate(
-                                    options[1],
-                                    Double.parseDouble(options[2]),
-                                    Double.parseDouble(options[3]),
-                                    v.getVin(),
-                                    options[4]);
+
+                        StringBuilder errorMessage = new StringBuilder();
+                        double x, y;
+
+                        try {
+                            x = Double.parseDouble(options[2]);
+                            y = Double.parseDouble(options[3]);
+                        } catch (NumberFormatException e){
+                            System.out.println("error creating alert: invalid position");
+                            break;
+                        }
+                        String eventType = options[1];
+                        String vin = v.getVin();
+                        String detail = options[4];
+
+                        if(!isPositionValid(x, y)){
+                            errorMessage.append("invalid position; ") ;
+                        }
+
+                        if(!isRoadHoleDetailValid(detail)){
+                            errorMessage.append("invalid detail; ");
+                        }
+
+
+                        if (errorMessage.toString().equals("")) {
+
+                            GeneratedAlert generatedAlert;
+                            generatedAlert = alertFactory.generate(eventType, x, y, vin, detail);
 
                             Alert alert = generatedAlert.getAlert();
-                            String errorMessage = generatedAlert.getErrorMessage();
+                            alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));
+                            alert.setExpirationInstant();
+                            alertList.addAlert(alert);
 
-                            if (errorMessage == null) {
-                                alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));
-                                alert.setExpirationInstant();
-                                alertList.addAlert(alert);
-                                System.out.println("Alert added successfully: " + alert.toString());
-                            } else {
-                                System.out.println("error creating alert: " + errorMessage);
-                            }
-                        } catch (NumberFormatException e){
-                            generatedAlert.appendError("invalid position");
-                            System.out.println("error creating alert: " + generatedAlert.getErrorMessage());
+                            System.out.println("Alert added successfully: " + alert.toString());
+
+                        } else {
+                            System.out.println("error creating alert: " + errorMessage);
                         }
                     }
                     break;
@@ -119,5 +136,13 @@ public class TestClass{
 
     private static void displayHelp(){
         System.out.println("helper menu");
+    }
+
+    public static boolean isPositionValid(double x, double y){
+        return !( x > 99.9) && !(x < 0.0) && !(y > 99.9) && !(y < 0.0);
+    }
+
+    public static boolean isRoadHoleDetailValid(String detail){
+        return Arrays.asList(Vars.ROADHOLE_STATUSES).contains(detail);
     }
 }
