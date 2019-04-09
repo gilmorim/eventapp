@@ -26,6 +26,7 @@ public class RoadHole extends Alert {
         this.depth = depth;
     }
 
+    @Override
     public String toJson(){
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();

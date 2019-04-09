@@ -1,5 +1,7 @@
 package Alerts;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.apache.commons.lang.time.DateUtils;
 
 import java.text.ParseException;
@@ -94,6 +96,14 @@ public abstract class Alert {
         Date currentDate = new Date();
         Date expirationDate = format.parse(expirationInstant);
         return currentDate.after(expirationDate);
+    }
+
+    public String toJson(){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setPrettyPrinting();
+        Gson gson = gsonBuilder.create();
+
+        return gson.toJson(this);
     }
 
 }
