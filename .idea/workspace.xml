@@ -2,26 +2,40 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7fb047f5-9e78-4c57-b85f-3bb1ff40e19b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../PrimaDoMachado/.idea/compiler.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../PrimaDoMachado/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/AlertFactory/AlertFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/AlertFactory/AlertFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/AlertList/AlertList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/AlertList/AlertList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Alerts/Alert.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Alerts/Alert.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Alerts/Crash.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Alerts/Crash.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Alerts/Fog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Alerts/Fog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Alerts/Rain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Alerts/Rain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Alerts/RoadBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Alerts/RoadBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Alerts/RoadHole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Alerts/RoadHole.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Alerts/Snow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Alerts/Snow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Alerts/TrafficJam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Alerts/TrafficJam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DTN/DTNSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DTN/DTNSender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DTN/TestInternet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DTN/TestInternet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TestClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestClass.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Utils/Vars.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Utils/Vars.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Vehicle/Vehicle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Vehicle/Vehicle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/alerttime.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/alerttime.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AlertFactory/AlertFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AlertFactory/AlertFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AlertList/AlertList.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AlertList/AlertList.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Alerts/Alert.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Alerts/Alert.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Alerts/Crash.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Alerts/Crash.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Alerts/Fog.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Alerts/Fog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Alerts/Rain.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Alerts/Rain.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Alerts/RoadBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Alerts/RoadBlock.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Alerts/RoadHole.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Alerts/RoadHole.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DTNConnection/TestInternet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Alerts/Snow.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Alerts/Snow.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Alerts/TrafficJam.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Alerts/TrafficJam.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Command/UserInput.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Command/UserInput.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/TestClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/TestClass.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Utils/AlertDurationMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Utils/AlertDurationMap.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Utils/TimeStamper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Utils/TimeStamper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Utils/Vars.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Utils/Vars.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Vehicle/Vehicle.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Vehicle/Vehicle.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../gr-octetmonitor" beforeDir="false" afterPath="$PROJECT_DIR$/../gr-octetmonitor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../simpleweatherstation" beforeDir="false" afterPath="$PROJECT_DIR$/../simpleweatherstation" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../test/Makefile" beforeDir="false" />
@@ -43,16 +57,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/TestClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="93" column="48" lean-forward="true" selection-start-line="93" selection-start-column="48" selection-end-line="93" selection-end-column="48" />
+            <state relative-caret-position="-960">
+              <caret line="41" column="63" selection-start-line="41" selection-start-column="63" selection-end-line="41" selection-end-column="63" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5351#5352#0" expanded="true" />
-                <element signature="e#5422#5423#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/alerttime.cfg">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -60,14 +81,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/Crash.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret lean-forward="true" />
+            <state relative-caret-position="30">
+              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#548#549#0" expanded="true" />
-                <element signature="e#575#576#0" expanded="true" />
-                <element signature="e#615#616#0" expanded="true" />
-                <element signature="e#647#648#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -76,8 +93,24 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Utils/Vars.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="61" selection-start-line="15" selection-start-column="61" selection-end-line="15" selection-end-column="61" />
+            <state relative-caret-position="315">
+              <caret line="21" column="1" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/Fog.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="9" selection-start-line="7" selection-end-line="8" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#584#585#0" expanded="true" />
+                <element signature="e#611#612#0" expanded="true" />
+                <element signature="e#651#652#0" expanded="true" />
+                <element signature="e#683#684#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -85,7 +118,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/RoadHole.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
+            <state relative-caret-position="75">
               <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -93,6 +126,33 @@
                 <element signature="e#663#664#0" expanded="true" />
                 <element signature="e#705#706#0" expanded="true" />
                 <element signature="e#739#740#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/AlertFactory/AlertFactory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="409">
+              <caret line="54" column="22" selection-start-line="54" selection-start-column="22" selection-end-line="54" selection-end-column="22" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/TrafficJam.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#600#601#0" expanded="true" />
+                <element signature="e#627#628#0" expanded="true" />
+                <element signature="e#667#668#0" expanded="true" />
+                <element signature="e#699#700#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -122,7 +182,6 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/java/Command/UserInput.java" />
         <option value="$PROJECT_DIR$/src/main/java/Utils/TimeStamper.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/alerttime.cfg" />
         <option value="$PROJECT_DIR$/src/main/java/Utils/AlertDurationMap.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/AlertList/AlertList.java" />
@@ -137,17 +196,18 @@
         <option value="$PROJECT_DIR$/src/main/java/DTN/DTNSender.java" />
         <option value="$PROJECT_DIR$/src/main/java/DTN/DTNReceiver.java" />
         <option value="$PROJECT_DIR$/src/main/java/DTN/TestInternet.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Alerts/Rain.java" />
         <option value="$PROJECT_DIR$/src/main/java/Alerts/Alert.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Alerts/Fog.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Alerts/RoadBlock.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Alerts/Snow.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Alerts/TrafficJam.java" />
-        <option value="$PROJECT_DIR$/src/main/java/AlertFactory/AlertFactory.java" />
         <option value="$PROJECT_DIR$/src/main/java/Alerts/RoadHole.java" />
         <option value="$PROJECT_DIR$/src/main/java/Alerts/Crash.java" />
         <option value="$PROJECT_DIR$/src/main/java/Utils/Vars.java" />
         <option value="$PROJECT_DIR$/src/main/java/TestClass.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Alerts/Fog.java" />
+        <option value="$PROJECT_DIR$/src/main/java/AlertFactory/AlertFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Alerts/Rain.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Alerts/RoadBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Alerts/Snow.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Alerts/TrafficJam.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/alerttime.cfg" />
       </list>
     </option>
   </component>
@@ -168,6 +228,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -221,8 +283,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -289,7 +349,7 @@
     <frame x="-1" y="0" width="1368" height="741" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25981873" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26359516" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -339,13 +399,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/SlipperySurface.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/IntenseRain.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/BadVisibility.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/resources/alerttime.cfg">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="13" lean-forward="true" selection-start-column="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/cardata.cfg">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -473,70 +526,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/Fog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="42" column="1" lean-forward="true" selection-start-line="42" selection-start-column="1" selection-end-line="42" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#965#966#0" expanded="true" />
-            <element signature="e#1001#1002#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/Rain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="42" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/RoadBlock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="9" column="53" selection-end-line="42" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/Snow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="38" column="13" lean-forward="true" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1143#1144#0" expanded="true" />
-            <element signature="e#1180#1181#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/Alert.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="107" column="5" selection-start-line="107" selection-start-column="5" selection-end-line="107" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/AlertFactory/AlertFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/AlertFactory/GeneratedAlert.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -544,42 +533,71 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/TrafficJam.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/Alert.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="35" column="29" lean-forward="true" selection-start-line="35" selection-start-column="29" selection-end-line="35" selection-end-column="29" />
+        <state relative-caret-position="476">
+          <caret line="107" column="5" selection-start-line="107" selection-start-column="5" selection-end-line="107" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1436#1437#0" expanded="true" />
-            <element signature="e#1477#1478#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Utils/Vars.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="61" selection-start-line="15" selection-start-column="61" selection-end-line="15" selection-end-column="61" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/Crash.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
+        <state relative-caret-position="30">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#548#549#0" expanded="true" />
-            <element signature="e#575#576#0" expanded="true" />
-            <element signature="e#615#616#0" expanded="true" />
-            <element signature="e#647#648#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/Fog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="9" selection-start-line="7" selection-end-line="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#584#585#0" expanded="true" />
+            <element signature="e#611#612#0" expanded="true" />
+            <element signature="e#651#652#0" expanded="true" />
+            <element signature="e#683#684#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/Rain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="469">
+          <caret line="53" column="15" lean-forward="true" selection-start-line="53" selection-start-column="15" selection-end-line="53" selection-end-column="15" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#608#609#0" expanded="true" />
+            <element signature="e#635#636#0" expanded="true" />
+            <element signature="e#675#676#0" expanded="true" />
+            <element signature="e#707#708#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/RoadBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="50" lean-forward="true" selection-start-line="50" selection-end-line="50" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#596#597#0" expanded="true" />
+            <element signature="e#623#624#0" expanded="true" />
+            <element signature="e#663#664#0" expanded="true" />
+            <element signature="e#695#696#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/RoadHole.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
+        <state relative-caret-position="75">
           <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -591,15 +609,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/TestClass.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/Snow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="93" column="48" lean-forward="true" selection-start-line="93" selection-start-column="48" selection-end-line="93" selection-end-column="48" />
+        <state relative-caret-position="-11">
+          <caret line="18" column="32" lean-forward="true" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5351#5352#0" expanded="true" />
-            <element signature="e#5422#5423#0" expanded="true" />
+            <element signature="e#571#572#0" expanded="true" />
+            <element signature="e#598#599#0" expanded="true" />
+            <element signature="e#638#639#0" expanded="true" />
+            <element signature="e#670#671#0" expanded="true" />
+            <element signature="e#1143#1144#0" expanded="true" />
+            <element signature="e#1180#1181#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/AlertFactory/AlertFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="54" column="22" selection-start-line="54" selection-start-column="22" selection-end-line="54" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Alerts/TrafficJam.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#600#601#0" expanded="true" />
+            <element signature="e#627#628#0" expanded="true" />
+            <element signature="e#667#668#0" expanded="true" />
+            <element signature="e#699#700#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Utils/Vars.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="1" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/TestClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-960">
+          <caret line="41" column="63" selection-start-line="41" selection-start-column="63" selection-end-line="41" selection-end-column="63" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/alerttime.cfg">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
         </state>
       </provider>
     </entry>

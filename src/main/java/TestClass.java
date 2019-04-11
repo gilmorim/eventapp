@@ -98,10 +98,9 @@ public class TestClass{
                             errorMessage.append("invalid position; ") ;
                         }
 
-                        if(!isRoadHoleDetailValid(detail)){
-                            errorMessage.append("invalid detail; ");
+                        if(!isDetailValid(detail, eventType)){
+                            errorMessage.append("invalid detail");
                         }
-
 
                         if (errorMessage.toString().equals("")) {
 
@@ -142,11 +141,38 @@ public class TestClass{
         return !( x > 99.9) && !(x < 0.0) && !(y > 99.9) && !(y < 0.0);
     }
 
-    public static boolean isCrashDetailValid(String detail){
-        return Arrays.asList(Vars.CRASH_TYPES).contains(detail);
-    }
-
-    public static boolean isRoadHoleDetailValid(String detail){
-        return Arrays.asList(Vars.ROADHOLE_STATUSES).contains(detail);
+    public static boolean isDetailValid(String detail, String type){
+        boolean valid = false;
+        switch (type){
+            case "-c" : {
+                valid = Arrays.asList(Vars.CRASH_TYPES).contains(detail);
+                break;
+            }
+            case "-f" : {
+                valid = Arrays.asList(Vars.FOG_TYPES).contains(detail);
+                break;
+            }
+            case "-r" : {
+                valid = Arrays.asList(Vars.RAIN_TYPES).contains(detail);
+                break;
+            }
+            case "-b" : {
+                valid = Arrays.asList(Vars.ROADBLOCK_TYPES).contains(detail);
+                break;
+            }
+            case "-h" : {
+                valid = Arrays.asList(Vars.ROADHOLE_STATUSES).contains(detail);
+                break;
+            }
+            case "-s" : {
+                valid = Arrays.asList(Vars.SNOW_TYPES).contains(detail);
+                break;
+            }
+            case "-t" : {
+                valid = Arrays.asList(Vars.TRAFFICJAM_TYPE).contains(detail);
+                break;
+            }
+        }
+        return valid;
     }
 }

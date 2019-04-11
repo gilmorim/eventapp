@@ -20,32 +20,32 @@ public class AlertFactory {
                 break;
             }
             case "-c": {
-                Crash crash = new Crash(vin, x, y, new TimeStamper().now(new Date()));
+                Crash crash = new Crash(vin, x, y, new TimeStamper().now(new Date()), detail);
                 generatedAlert.setAlert(crash);
                 break;
             }
             case "-f": {
-                Fog fog = new Fog(vin, x, y, new TimeStamper().now(new Date()));
+                Fog fog = new Fog(vin, x, y, new TimeStamper().now(new Date()), detail);
                 generatedAlert.setAlert(fog);
                 break;
             }
             case "-r": {
-                Rain rain = new Rain(vin, x, y, new TimeStamper().now(new Date()));
+                Rain rain = new Rain(vin, x, y, new TimeStamper().now(new Date()), detail);
                 generatedAlert.setAlert(rain);
                 break;
             }
             case "-b": {
-                RoadBlock roadBlock = new RoadBlock(vin, x, y, new TimeStamper().now(new Date()));
+                RoadBlock roadBlock = new RoadBlock(vin, x, y, new TimeStamper().now(new Date()), detail);
                 generatedAlert.setAlert(roadBlock);
                 break;
             }
             case "-s": {
-                Snow snow = new Snow(vin, x, y, new TimeStamper().now(new Date()));
+                Snow snow = new Snow(vin, x, y, new TimeStamper().now(new Date()), detail);
                 generatedAlert.setAlert(snow);
                 break;
             }
             case "-t": {
-                TrafficJam trafficJam = new TrafficJam(vin, x, y, new TimeStamper().now(new Date()));
+                TrafficJam trafficJam = new TrafficJam(vin, x, y, new TimeStamper().now(new Date()), detail);
                 generatedAlert.setAlert(trafficJam);
                 break;
             }

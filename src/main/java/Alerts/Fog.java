@@ -5,14 +5,26 @@ import com.google.gson.GsonBuilder;
 
 public class Fog extends Alert {
 
-    public Fog(String originVehicle, double x, double y, String timestamp){
+    String type;
+
+    public Fog(String originVehicle, double x, double y, String timestamp, String type){
         super(originVehicle, x, y, timestamp);
         this.setDescription(this.getClass().getSimpleName());
+        this.type = type;
     }
 
     public Fog(Fog f){
         super(f.getOriginVehicle(), f.getX(), f.getY(), f.getCreationInstant());
         this.setDescription(this.getClass().getSimpleName());
+        this.type = f.getType();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
@@ -32,7 +44,8 @@ public class Fog extends Alert {
                 + " " + super.getX()
                 + " " + super.getY()
                 + " " + super.getCreationInstant()
-                + " " + super.getExpirationInstant());
+                + " " + super.getExpirationInstant()
+                + " " + getType());
         return sb.toString();
     }
 

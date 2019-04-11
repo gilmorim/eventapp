@@ -5,14 +5,26 @@ import com.google.gson.GsonBuilder;
 
 public class Rain extends Alert {
 
-    public Rain(String originVehicle, double x, double y, String timestamp){
+    String type;
+
+    public Rain(String originVehicle, double x, double y, String timestamp, String type){
         super(originVehicle, x, y, timestamp);
         this.setDescription(this.getClass().getSimpleName());
+        this.type = type;
     }
 
     public Rain(Rain r){
         super(r.getOriginVehicle(), r.getX(), r.getY(), r.getCreationInstant());
         this.setDescription(this.getClass().getSimpleName());
+        this.type = r.getType();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
@@ -32,7 +44,8 @@ public class Rain extends Alert {
                 + " " + super.getX()
                 + " " + super.getY()
                 + " " + super.getCreationInstant()
-                + " " + super.getExpirationInstant());
+                + " " + super.getExpirationInstant()
+                + " " + getType());
         return sb.toString();
     }
 

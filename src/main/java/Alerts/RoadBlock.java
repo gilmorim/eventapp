@@ -5,14 +5,26 @@ import com.google.gson.GsonBuilder;
 
 public class RoadBlock extends Alert {
 
-    public RoadBlock(String originVehicle, double x, double y, String timestamp){
+    String type;
+
+    public RoadBlock(String originVehicle, double x, double y, String timestamp, String type){
         super(originVehicle, x, y, timestamp);
         this.setDescription(this.getClass().getSimpleName());
+        this.type = type;
     }
 
     public RoadBlock(RoadBlock rb){
         super(rb.getOriginVehicle(), rb.getX(), rb.getY(), rb.getCreationInstant());
         this.setDescription(this.getClass().getSimpleName());
+        this.type = rb.getType();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
@@ -32,7 +44,8 @@ public class RoadBlock extends Alert {
                 + " " + super.getX()
                 + " " + super.getY()
                 + " " + super.getCreationInstant()
-                + " " + super.getExpirationInstant());
+                + " " + super.getExpirationInstant()
+                + " " + getType());
         return sb.toString();
     }
 
