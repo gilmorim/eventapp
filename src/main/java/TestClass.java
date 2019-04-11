@@ -142,6 +142,10 @@ public class TestClass{
         return !( x > 99.9) && !(x < 0.0) && !(y > 99.9) && !(y < 0.0);
     }
 
+    public static boolean isCrashDetailValid(String detail){
+        return Arrays.asList(Vars.CRASH_TYPES).contains(detail);
+    }
+
     public static boolean isRoadHoleDetailValid(String detail){
         return Arrays.asList(Vars.ROADHOLE_STATUSES).contains(detail);
     }

@@ -1,5 +1,6 @@
 package DTN;
 
+import AlertList.AlertList;
 import Alerts.Alert;
 import Utils.Vars;
 
@@ -51,6 +52,21 @@ public class DTNSender {
         for(InetAddress address : addressList.getAddressList()){
             multicastSocket.setInterface(address);
             multicastSocket.send(dp);
+        }
+    }
+
+    // TODO: THIS WILL HAVE TO BE DONE ON A SEPARATE THREAD
+    public void sendAllAlerts(AlertList al) throws IOException {
+
+        for(Alert a : al.getAlertList()){
+            String message = a.toJson();
+            DatagramPacket dp = new DatagramPacket(message.getBytes(), message.length(),
+                    addressList.getGroupAddress(), port);
+
+            for(InetAddress address : addressList.getAddressList()){
+                multicastSocket.setInterface(address);
+                multicastSocket.send(dp);
+            }
         }
     }
 }

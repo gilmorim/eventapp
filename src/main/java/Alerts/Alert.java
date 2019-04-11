@@ -26,6 +26,7 @@ public abstract class Alert {
         this.creationInstant = creationInstant;
         duration = 2880; // default value of 2 days
     }
+
     public double getX() {
         return x;
     }
@@ -105,5 +106,4 @@ public abstract class Alert {
 
         return gson.toJson(this);
     }
-
 }
