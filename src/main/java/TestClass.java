@@ -8,6 +8,8 @@ import Utils.Vars;
 import Vehicle.Vehicle;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Timer;
@@ -125,8 +127,80 @@ public class TestClass{
                     displayHelp();
                     break;
                 }
+
+                case "la" : {
+                    if(alertList.getAlertList().isEmpty()){
+                        System.out.println("alert list is empty");
+                    } else {
+                        System.out.println(alertList.toString());
+                    }
+                    break;
+                }
                 default: {
                     System.out.println("unknown command: " + userIn);
+                }
+
+                // TODO: duplicate code here, find way to recycle earlier code
+                // read alerts from file instead of standard input
+                case "rdfile" : {
+                    if(options.length < 2){
+                        System.out.println("insufficient arguments for rdfile option");
+                    } else {
+                        String line;
+                        String path = "./src/main/resources/" + options[1];
+                        double x, y;
+                        BufferedReader reader = Files.newBufferedReader(Paths.get(path));
+                        int lineNumber = 0;
+                        while((line = reader.readLine()) != null){
+                            StringBuilder errorMessage = new StringBuilder();
+                            lineNumber++;
+                            String[] words = line.split(" ");
+                            // comment or empty line support
+                            if(words[0].charAt(0) == '#' || words[0].charAt(0) == '\n')
+                                continue;
+                            if(words.length < 4){
+                                System.out.println("invalid line " + lineNumber +  ": " + line + " - not enough arguments. Skipping...");
+                            } else {
+
+                                try {
+                                    x = Double.parseDouble(words[1]);
+                                    y = Double.parseDouble(words[2]);
+                                } catch (NumberFormatException e){
+                                    System.out.println("error creating alert: invalid position");
+                                    break;
+                                }
+
+                                String eventType = words[0];
+                                String vin = v.getVin();
+                                String detail = words[3];
+
+                                if(!isPositionValid(x, y)){
+                                    errorMessage.append("invalid position; ") ;
+                                }
+
+                                if(!isDetailValid(detail, eventType)){
+                                    errorMessage.append("invalid detail " + detail);
+                                }
+
+                                if (errorMessage.toString().equals("")) {
+
+                                    GeneratedAlert generatedAlert;
+                                    generatedAlert = alertFactory.generate(eventType, x, y, vin, detail);
+
+                                    Alert alert = generatedAlert.getAlert();
+                                    alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));
+                                    alert.setExpirationInstant();
+                                    alertList.addAlert(alert);
+
+                                    System.out.println("Alert added successfully: " + alert.toString());
+
+                                } else {
+                                    System.out.println("line " + lineNumber + " - error creating alert: " + errorMessage + ". Skipping...");
+                                }
+                            }
+                        }
+                    }
+                    break;
                 }
             }
             System.out.print(">> ");
@@ -134,7 +208,8 @@ public class TestClass{
     }
 
     private static void displayHelp(){
-        System.out.println("helper menu");
+        System.out.println("########## helper menu #############\n"
+                );
     }
 
     public static boolean isPositionValid(double x, double y){

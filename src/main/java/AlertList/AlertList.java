@@ -53,7 +53,7 @@ public class AlertList {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         for(Alert a : alertList){
-            sb.append(a.toString());
+            sb.append(a.toString() + "\n");
         }
         return sb.toString();
     }
