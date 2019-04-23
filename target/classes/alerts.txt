@@ -3,5 +3,6 @@
 -c 12.3 25.2 chain
 -f 72.0 12.2 dense
 -r 66.2 88.1 pouring
--t 43.1 2.2 gdsgsd
+-t 43.1 2.2 long
+-b 11.3 11.7 authority
 -b 11.3 11.7 authority

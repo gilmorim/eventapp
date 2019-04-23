@@ -190,10 +190,12 @@ public class TestClass{
                                     Alert alert = generatedAlert.getAlert();
                                     alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));
                                     alert.setExpirationInstant();
-                                    alertList.addAlert(alert);
-
-                                    System.out.println("Alert added successfully: " + alert.toString());
-
+                                    if(!alertList.hasAlert(alert)){
+                                        alertList.addAlert(alert);
+                                        System.out.println("Alert added successfully: " + alert.toString());
+                                    }
+                                    else
+                                        System.out.println("alert already exists. ignoring...");
                                 } else {
                                     System.out.println("line " + lineNumber + " - error creating alert: " + errorMessage + ". Skipping...");
                                 }

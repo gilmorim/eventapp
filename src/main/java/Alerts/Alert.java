@@ -106,4 +106,8 @@ public abstract class Alert {
 
         return gson.toJson(this);
     }
+
+    public boolean equals(Alert a){
+        return (a.getX() == this.getX() && a.getY() == this.getY() && a.getClass().getSimpleName() == this.getClass().getSimpleName());
+    }
 }

@@ -50,6 +50,17 @@ public class AlertList {
         return countRemovedAlerts;
     }
 
+    public boolean hasAlert(Alert alert){
+        boolean exists = false;
+        for(Alert a : alertList){
+            if(a.equals(alert)){
+                exists = true;
+                break;
+            }
+        }
+        return exists;
+    }
+
     public String toString(){
         StringBuilder sb = new StringBuilder();
         for(Alert a : alertList){
