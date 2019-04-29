@@ -17,13 +17,15 @@ public abstract class Alert {
     private String expirationInstant;
     private String description;
     private int duration;
+    private int remainingTransmissions;
     private String originVehicle;
 
-    public Alert(String originVehicle, double x, double y, String creationInstant){
+    public Alert(String originVehicle, double x, double y, String creationInstant, int remainingTransmissions){
         this.originVehicle = originVehicle;
         this.x = x;
         this.y = y;
         this.creationInstant = creationInstant;
+        this.remainingTransmissions = remainingTransmissions;
         duration = 2880; // default value of 2 days
     }
 
@@ -71,6 +73,14 @@ public abstract class Alert {
         return expirationInstant;
     }
 
+    public int getRemainingTransmissions() {
+        return remainingTransmissions;
+    }
+
+    public void setRemainingTransmissions(int remainingTransmissions) {
+        this.remainingTransmissions = remainingTransmissions;
+    }
+
     // TODO: SPAGHET CODE, THINK A BETTER WAY TO DO THIS
     public void setExpirationInstant() throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -107,7 +117,20 @@ public abstract class Alert {
         return gson.toJson(this);
     }
 
+    public void decreaseRemainingTransmissions(){
+        remainingTransmissions--;
+    }
+
+    public boolean isTransmittable(){
+        boolean transmittable = true;
+
+        if(getRemainingTransmissions() < 1)
+            transmittable = false;
+
+        return transmittable;
+    }
+
     public boolean equals(Alert a){
-        return (a.getX() == this.getX() && a.getY() == this.getY() && a.getClass().getSimpleName() == this.getClass().getSimpleName());
+        return (a.getX() == this.getX() && a.getY() == this.getY() && a.getDescription() == this.getDescription());
     }
 }

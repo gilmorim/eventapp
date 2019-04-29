@@ -2,12 +2,16 @@ import AlertFactory.AlertFactory;
 import AlertFactory.GeneratedAlert;
 import AlertList.AlertList;
 import Alerts.Alert;
+import DTN.DTNAddressList;
+import DTN.DTNReceiver;
+import DTN.DTNSender;
 import Runnables.AlertRemover;
 import Utils.AlertDurationMap;
 import Utils.Vars;
 import Vehicle.Vehicle;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
@@ -60,6 +64,17 @@ public class TestClass{
         Timer removerTimer = new Timer();
         removerTimer.schedule(new AlertRemover(alertList), cleanupPeriod, cleanupPeriod);
 
+        InetAddress group = InetAddress.getByName("ff02:01");
+
+        DTNAddressList addressList = new DTNAddressList(group);
+        addressList.initialize();
+
+        DTNSender sender = new DTNSender(addressList);
+
+        DTNReceiver receiver = new DTNReceiver(addressList);
+
+        Thread recvThread = new Thread(receiver);
+        recvThread.start();
 
         BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
         String userIn;
@@ -190,6 +205,8 @@ public class TestClass{
                                     Alert alert = generatedAlert.getAlert();
                                     alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));
                                     alert.setExpirationInstant();
+
+                                    // filter repeated alerts
                                     if(!alertList.hasAlert(alert)){
                                         alertList.addAlert(alert);
                                         System.out.println("Alert added successfully: " + alert.toString());
@@ -210,15 +227,14 @@ public class TestClass{
     }
 
     private static void displayHelp(){
-        System.out.println("########## helper menu #############\n"
-                );
+        System.out.println("########## helper menu #############\n");
     }
 
-    public static boolean isPositionValid(double x, double y){
+    private static boolean isPositionValid(double x, double y){
         return !( x > 99.9) && !(x < 0.0) && !(y > 99.9) && !(y < 0.0);
     }
 
-    public static boolean isDetailValid(String detail, String type){
+    private static boolean isDetailValid(String detail, String type){
         boolean valid = false;
         switch (type){
             case "-c" : {

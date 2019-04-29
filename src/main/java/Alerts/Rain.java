@@ -7,14 +7,14 @@ public class Rain extends Alert {
 
     String type;
 
-    public Rain(String originVehicle, double x, double y, String timestamp, String type){
-        super(originVehicle, x, y, timestamp);
+    public Rain(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
+        super(originVehicle, x, y, timestamp, remainingTransmissions);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
 
     public Rain(Rain r){
-        super(r.getOriginVehicle(), r.getX(), r.getY(), r.getCreationInstant());
+        super(r.getOriginVehicle(), r.getX(), r.getY(), r.getCreationInstant(), r.getRemainingTransmissions());
         this.setDescription(this.getClass().getSimpleName());
         this.type = r.getType();
     }

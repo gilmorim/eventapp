@@ -7,14 +7,14 @@ public class RoadBlock extends Alert {
 
     String type;
 
-    public RoadBlock(String originVehicle, double x, double y, String timestamp, String type){
-        super(originVehicle, x, y, timestamp);
+    public RoadBlock(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
+        super(originVehicle, x, y, timestamp, remainingTransmissions);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
 
     public RoadBlock(RoadBlock rb){
-        super(rb.getOriginVehicle(), rb.getX(), rb.getY(), rb.getCreationInstant());
+        super(rb.getOriginVehicle(), rb.getX(), rb.getY(), rb.getCreationInstant(), rb.getRemainingTransmissions());
         this.setDescription(this.getClass().getSimpleName());
         this.type = rb.getType();
     }

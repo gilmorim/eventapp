@@ -7,14 +7,14 @@ public class Fog extends Alert {
 
     String type;
 
-    public Fog(String originVehicle, double x, double y, String timestamp, String type){
-        super(originVehicle, x, y, timestamp);
+    public Fog(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
+        super(originVehicle, x, y, timestamp, remainingTransmissions);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
 
     public Fog(Fog f){
-        super(f.getOriginVehicle(), f.getX(), f.getY(), f.getCreationInstant());
+        super(f.getOriginVehicle(), f.getX(), f.getY(), f.getCreationInstant(), f.getRemainingTransmissions());
         this.setDescription(this.getClass().getSimpleName());
         this.type = f.getType();
     }

@@ -6,14 +6,14 @@ import com.google.gson.GsonBuilder;
 public class RoadHole extends Alert {
     private String depth;
 
-    public RoadHole(String originVehicle, double x, double y, String timestamp, String depth){
-        super(originVehicle, x, y, timestamp);
+    public RoadHole(String originVehicle, double x, double y, String timestamp, String depth, int remainingTransmissions){
+        super(originVehicle, x, y, timestamp, remainingTransmissions);
         this.depth = depth;
         this.setDescription(this.getClass().getSimpleName());
     }
 
     public RoadHole(RoadHole rh){
-        super(rh.getOriginVehicle(), rh.getX(), rh.getY(), rh.getCreationInstant());
+        super(rh.getOriginVehicle(), rh.getX(), rh.getY(), rh.getCreationInstant(), rh.getRemainingTransmissions());
         depth = rh.getDepth();
         this.setDescription(this.getClass().getSimpleName());
     }

@@ -7,14 +7,14 @@ public class Snow extends Alert {
 
     String type;
 
-    public Snow(String originVehicle, double x, double y, String timestamp, String type){
-        super(originVehicle, x, y, timestamp);
+    public Snow(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
+        super(originVehicle, x, y, timestamp, remainingTransmissions);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
 
     public Snow(Snow s){
-        super(s.getOriginVehicle(), s.getX(), s.getY(), s.getCreationInstant());
+        super(s.getOriginVehicle(), s.getX(), s.getY(), s.getCreationInstant(), s.getRemainingTransmissions());
         this.setDescription(this.getClass().getSimpleName());
         this.type = s.getType();
     }

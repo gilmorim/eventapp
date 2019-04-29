@@ -7,14 +7,14 @@ public class TrafficJam extends Alert {
 
     String type;
 
-    public TrafficJam(String originVehicle, double x, double y, String timestamp, String type){
-        super(originVehicle, x, y, timestamp);
+    public TrafficJam(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
+        super(originVehicle, x, y, timestamp, remainingTransmissions);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
 
     public TrafficJam(TrafficJam tj){
-        super(tj.getOriginVehicle(), tj.getX(), tj.getY(), tj.getCreationInstant());
+        super(tj.getOriginVehicle(), tj.getX(), tj.getY(), tj.getCreationInstant(), tj.getRemainingTransmissions());
         this.setDescription(this.getClass().getSimpleName());
         this.type = tj.getType();
     }
