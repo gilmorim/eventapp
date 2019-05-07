@@ -19,6 +19,7 @@ public abstract class Alert {
     private int duration;
     private int remainingTransmissions;
     private String originVehicle;
+    private boolean transmissible;
 
     public Alert(String originVehicle, double x, double y, String creationInstant, int remainingTransmissions){
         this.originVehicle = originVehicle;
@@ -26,6 +27,7 @@ public abstract class Alert {
         this.y = y;
         this.creationInstant = creationInstant;
         this.remainingTransmissions = remainingTransmissions;
+        transmissible = true;
         duration = 2880; // default value of 2 days
     }
 
@@ -79,6 +81,14 @@ public abstract class Alert {
 
     public void setRemainingTransmissions(int remainingTransmissions) {
         this.remainingTransmissions = remainingTransmissions;
+    }
+
+    public boolean isTransmissible() {
+        return transmissible;
+    }
+
+    public void setTransmissible(boolean transmissible) {
+        this.transmissible = transmissible;
     }
 
     // TODO: SPAGHET CODE, THINK A BETTER WAY TO DO THIS

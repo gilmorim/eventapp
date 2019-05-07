@@ -35,11 +35,11 @@ public class AlertList {
         this.cleanupInterval = cleanupInterval;
     }
 
-    public synchronized void addAlert(Alert a){
+    public void addAlert(Alert a){
         alertList.add(a);
     }
 
-    public synchronized int cleanExpired() throws ParseException {
+    public int cleanExpired() throws ParseException {
         int countRemovedAlerts = 0;
         for(Alert a : alertList){
             if(a.isExpired()){

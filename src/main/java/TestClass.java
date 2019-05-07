@@ -20,6 +20,7 @@ import java.util.Timer;
 
 public class TestClass{
     public static void main(String[] args) throws IOException, ParseException {
+        int retransmissions = 5;
         Vehicle v = new Vehicle();
         v.fromFile("./src/main/resources/cardata.cfg");
 
@@ -64,17 +65,19 @@ public class TestClass{
         Timer removerTimer = new Timer();
         removerTimer.schedule(new AlertRemover(alertList), cleanupPeriod, cleanupPeriod);
 
-        InetAddress group = InetAddress.getByName("ff02:01");
+        InetAddress group = InetAddress.getByName("ff02::01");
 
         DTNAddressList addressList = new DTNAddressList(group);
         addressList.initialize();
 
-        DTNSender sender = new DTNSender(addressList);
-
+        DTNSender sender = new DTNSender(addressList, alertList);
         DTNReceiver receiver = new DTNReceiver(addressList);
 
         Thread recvThread = new Thread(receiver);
         recvThread.start();
+
+        Timer senderTimer = new Timer();
+        senderTimer.schedule(sender, sender.getDelayInMillis(), 5000);
 
         BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
         String userIn;
@@ -122,11 +125,14 @@ public class TestClass{
                         if (errorMessage.toString().equals("")) {
 
                             GeneratedAlert generatedAlert;
-                            generatedAlert = alertFactory.generate(eventType, x, y, vin, detail);
+                            generatedAlert = alertFactory.generate(eventType, x, y, vin, detail, retransmissions);
 
                             Alert alert = generatedAlert.getAlert();
                             alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));
                             alert.setExpirationInstant();
+
+                            sender.sendSingleAlert(alert);
+
                             alertList.addAlert(alert);
 
                             System.out.println("Alert added successfully: " + alert.toString());
@@ -149,6 +155,11 @@ public class TestClass{
                     } else {
                         System.out.println(alertList.toString());
                     }
+                    break;
+                }
+
+                case "sda" : {
+                    System.out.println(sender.getAlertList().toString() + " " + sender.getAlertList().getAlertList().size());
                     break;
                 }
                 default: {
@@ -200,7 +211,7 @@ public class TestClass{
                                 if (errorMessage.toString().equals("")) {
 
                                     GeneratedAlert generatedAlert;
-                                    generatedAlert = alertFactory.generate(eventType, x, y, vin, detail);
+                                    generatedAlert = alertFactory.generate(eventType, x, y, vin, detail, retransmissions);
 
                                     Alert alert = generatedAlert.getAlert();
                                     alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));

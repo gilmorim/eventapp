@@ -5,6 +5,7 @@ import Utils.Vars;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class DTNAddressList {
 
     public DTNAddressList(InetAddress groupAddress){
         this.groupAddress = groupAddress;
+        addressList = new ArrayList<>();
+        ignoredInterfaces = new ArrayList<>();
     }
 
     public InetAddress getGroupAddress() {

@@ -10,42 +10,42 @@ public class AlertFactory {
     public AlertFactory() {
     }
 
-    public GeneratedAlert generate(String type, double x, double y, String vin, String detail) {
+    public GeneratedAlert generate(String type, double x, double y, String vin, String detail, int retransmissions) {
         GeneratedAlert generatedAlert = new GeneratedAlert();
 
         switch (type) {
             case "-h": {
-                RoadHole roadHole = new RoadHole(vin, x, y, new TimeStamper().now(new Date()), detail);
+                RoadHole roadHole = new RoadHole(vin, x, y, new TimeStamper().now(new Date()), detail, retransmissions);
                 generatedAlert.setAlert(roadHole);
                 break;
             }
             case "-c": {
-                Crash crash = new Crash(vin, x, y, new TimeStamper().now(new Date()), detail);
+                Crash crash = new Crash(vin, x, y, new TimeStamper().now(new Date()), detail, retransmissions);
                 generatedAlert.setAlert(crash);
                 break;
             }
             case "-f": {
-                Fog fog = new Fog(vin, x, y, new TimeStamper().now(new Date()), detail);
+                Fog fog = new Fog(vin, x, y, new TimeStamper().now(new Date()), detail, retransmissions);
                 generatedAlert.setAlert(fog);
                 break;
             }
             case "-r": {
-                Rain rain = new Rain(vin, x, y, new TimeStamper().now(new Date()), detail);
+                Rain rain = new Rain(vin, x, y, new TimeStamper().now(new Date()), detail, retransmissions);
                 generatedAlert.setAlert(rain);
                 break;
             }
             case "-b": {
-                RoadBlock roadBlock = new RoadBlock(vin, x, y, new TimeStamper().now(new Date()), detail);
+                RoadBlock roadBlock = new RoadBlock(vin, x, y, new TimeStamper().now(new Date()), detail, retransmissions);
                 generatedAlert.setAlert(roadBlock);
                 break;
             }
             case "-s": {
-                Snow snow = new Snow(vin, x, y, new TimeStamper().now(new Date()), detail);
+                Snow snow = new Snow(vin, x, y, new TimeStamper().now(new Date()), detail, retransmissions);
                 generatedAlert.setAlert(snow);
                 break;
             }
             case "-t": {
-                TrafficJam trafficJam = new TrafficJam(vin, x, y, new TimeStamper().now(new Date()), detail);
+                TrafficJam trafficJam = new TrafficJam(vin, x, y, new TimeStamper().now(new Date()), detail, retransmissions);
                 generatedAlert.setAlert(trafficJam);
                 break;
             }
