@@ -1,6 +1,6 @@
 package DTN;
 
-import AlertList.AlertList;
+import AlertList.IncomingAlertsBuffer;
 import Alerts.Alert;
 import Utils.Vars;
 
@@ -15,15 +15,15 @@ public class DTNSender extends TimerTask {
     private MulticastSocket multicastSocket;
     private int port;
     private DTNAddressList addressList;
-    private AlertList alertList;
+    private IncomingAlertsBuffer alertBuffer;
     private int delayInMillis;
     private int nextAlertIndex;
 
-    public DTNSender(DTNAddressList addressList, AlertList alertList) throws IOException {
+    public DTNSender(DTNAddressList addressList, IncomingAlertsBuffer alertBuffer) throws IOException {
         multicastSocket = new MulticastSocket();
         port = Vars.MULTICAST_PORT_SEND;
         this.addressList = addressList;
-        this.alertList = alertList;
+        this.alertBuffer = alertBuffer;
         delayInMillis = new Random(System.currentTimeMillis()).nextInt(3000);
         nextAlertIndex = 0;
     }
@@ -52,12 +52,12 @@ public class DTNSender extends TimerTask {
         this.addressList = addressList;
     }
 
-    public AlertList getAlertList() {
-        return alertList;
+    public IncomingAlertsBuffer getAlertBuffer() {
+        return alertBuffer;
     }
 
-    public void setAlertList(AlertList alertList) {
-        this.alertList = alertList;
+    public void setAlertBuffer(IncomingAlertsBuffer alertList) {
+        this.alertBuffer = alertList;
     }
 
     public int getDelayInMillis() {
@@ -87,24 +87,10 @@ public class DTNSender extends TimerTask {
         }
     }
 
-    // TODO: THIS WILL HAVE TO BE DONE ON A SEPARATE THREAD
-    public void sendAllAlerts(AlertList al) throws IOException {
-
-        for (Alert a : al.getAlertList()) {
-            String message = a.toJson();
-            DatagramPacket dp = new DatagramPacket(message.getBytes(), message.length(),
-                    addressList.getGroupAddress(), port);
-
-            for (InetAddress address : addressList.getAddressList()) {
-                multicastSocket.setInterface(address);
-                multicastSocket.send(dp);
-            }
-        }
-    }
 
     public void run() {
-        if (alertList.getAlertList().size() > 0) {
-            Alert nextAlert = alertList.getAlertList().get(nextAlertIndex);
+        if (alertBuffer.getAlertBuffer().size() > 0) {
+            Alert nextAlert = alertBuffer.getAlertBuffer().get(nextAlertIndex);
             if (nextAlert != null) {
                 try {
                     System.out.println("transmitting alert: " + nextAlert.toString());
@@ -116,7 +102,7 @@ public class DTNSender extends TimerTask {
                 System.out.println("could not retrieve alert with index " + nextAlertIndex + " from list. Skipping...");
             }
 
-            if (nextAlertIndex < alertList.getAlertList().size() - 1) {
+            if (nextAlertIndex < alertBuffer.getAlertBuffer().size() - 1) {
                 nextAlertIndex++;
             } else {
                 nextAlertIndex = 0;

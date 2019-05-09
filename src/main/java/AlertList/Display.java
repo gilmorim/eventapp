@@ -5,16 +5,16 @@ import Alerts.Alert;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-public class AlertList {
+public class Display {
     private ArrayList<Alert> alertList;
     private int cleanupInterval;
 
-    public AlertList(){
+    public Display(){
         alertList = new ArrayList<Alert>();
         cleanupInterval = 0;
     }
 
-    public AlertList(AlertList al){
+    public Display(Display al){
         alertList = al.getAlertList();
         cleanupInterval = al.getCleanupInterval();
     }

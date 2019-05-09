@@ -1,13 +1,13 @@
 package Runnables;
 
-import AlertList.AlertList;
+import AlertList.Display;
 
 import java.text.ParseException;
 import java.util.TimerTask;
 
 public class AlertRemover extends TimerTask {
-    AlertList alertList;
-    public AlertRemover(AlertList alertList){
+    Display alertList;
+    public AlertRemover(Display alertList){
         this.alertList = alertList;
     }
 

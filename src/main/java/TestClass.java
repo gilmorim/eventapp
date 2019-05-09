@@ -1,6 +1,7 @@
 import AlertFactory.AlertFactory;
 import AlertFactory.GeneratedAlert;
-import AlertList.AlertList;
+import AlertList.Display;
+import AlertList.IncomingAlertsBuffer;
 import Alerts.Alert;
 import DTN.DTNAddressList;
 import DTN.DTNReceiver;
@@ -27,7 +28,8 @@ public class TestClass{
         AlertDurationMap alertDurationMap = new AlertDurationMap();
         alertDurationMap.fromFile("./src/main/resources/alerttime.cfg");
 
-        AlertList alertList = new AlertList();
+        Display display = new Display();
+        IncomingAlertsBuffer alertBuffer  = new IncomingAlertsBuffer();
 
         AlertFactory alertFactory = new AlertFactory();
 
@@ -63,14 +65,14 @@ public class TestClass{
         // scheduled task to clean expired alerts from queue
         // TODO: apply concurrency control to alert list access
         Timer removerTimer = new Timer();
-        removerTimer.schedule(new AlertRemover(alertList), cleanupPeriod, cleanupPeriod);
+        removerTimer.schedule(new AlertRemover(display), cleanupPeriod, cleanupPeriod);
 
         InetAddress group = InetAddress.getByName("ff02::01");
 
         DTNAddressList addressList = new DTNAddressList(group);
         addressList.initialize();
 
-        DTNSender sender = new DTNSender(addressList, alertList);
+        DTNSender sender = new DTNSender(addressList, alertBuffer);
         DTNReceiver receiver = new DTNReceiver(addressList);
 
         Thread recvThread = new Thread(receiver);
@@ -133,10 +135,14 @@ public class TestClass{
 
                             sender.sendSingleAlert(alert);
 
-                            alertList.addAlert(alert);
-
-                            System.out.println("Alert added successfully: " + alert.toString());
-
+                            // filter repeated alerts
+                            if(!display.hasAlert(alert) || !alertBuffer.hasAlert(alert)){
+                                display.addAlert(alert);
+                                alertBuffer.addAlert(alert);
+                                System.out.println("Alert added successfully: " + alert.toString());
+                            }
+                            else
+                                System.out.println("alert already exists. ignoring...");
                         } else {
                             System.out.println("error creating alert: " + errorMessage);
                         }
@@ -150,16 +156,16 @@ public class TestClass{
                 }
 
                 case "la" : {
-                    if(alertList.getAlertList().isEmpty()){
+                    if(display.getAlertList().isEmpty()){
                         System.out.println("alert list is empty");
                     } else {
-                        System.out.println(alertList.toString());
+                        System.out.println(display.toString());
                     }
                     break;
                 }
 
                 case "sda" : {
-                    System.out.println(sender.getAlertList().toString() + " " + sender.getAlertList().getAlertList().size());
+                    System.out.println(sender.getAlertBuffer().toString() + " " + sender.getAlertBuffer().getAlertBuffer().size());
                     break;
                 }
                 default: {
@@ -218,8 +224,9 @@ public class TestClass{
                                     alert.setExpirationInstant();
 
                                     // filter repeated alerts
-                                    if(!alertList.hasAlert(alert)){
-                                        alertList.addAlert(alert);
+                                    if(!display.hasAlert(alert) || !alertBuffer.hasAlert(alert)){
+                                        display.addAlert(alert);
+                                        alertBuffer.addAlert(alert);
                                         System.out.println("Alert added successfully: " + alert.toString());
                                     }
                                     else
