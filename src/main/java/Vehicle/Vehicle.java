@@ -11,6 +11,8 @@ public class Vehicle {
     private String model;
     private int year;
 
+    private static Vehicle vehicle = null;
+
     public Vehicle(){
         this.vin = "samplevin";
         this.brand="samplebrand";
@@ -85,6 +87,13 @@ public class Vehicle {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    public static Vehicle getInstance(){
+        if(vehicle == null)
+            vehicle = new Vehicle();
+
+        return vehicle;
     }
 
     @Override

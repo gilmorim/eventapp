@@ -2,6 +2,7 @@ package DTN;
 
 import AlertList.IncomingAlertsBuffer;
 import Alerts.Alert;
+import Logger.Logger;
 import Utils.Vars;
 
 import java.io.IOException;
@@ -93,8 +94,10 @@ public class DTNSender extends TimerTask {
             Alert nextAlert = alertBuffer.getAlertBuffer().get(nextAlertIndex);
             if (nextAlert != null) {
                 try {
-                    System.out.println("transmitting alert: " + nextAlert.toString());
                     sendSingleAlert(nextAlert);
+                    // Logger l = Logger.getInstance();
+                    // l.logTransmissionSuccess(nextAlert.toString());
+                    System.out.println("sent alert " + nextAlert.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -107,8 +110,8 @@ public class DTNSender extends TimerTask {
             } else {
                 nextAlertIndex = 0;
             }
-        } else {
+        } /*else {
             System.out.println("alert list empty, waiting for alerts...");
-        }
+        }*/
     }
 }

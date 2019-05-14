@@ -1,3 +1,12 @@
+/**
+ * @author Gilberto Morim
+ * @email gilgmorim@gmail.com
+ * @create date 2019-05-14 14:54:50
+ * @modify date 2019-05-14 14:54:50
+ * @desc Main class for DTN application
+ */
+
+
 import AlertFactory.AlertFactory;
 import AlertFactory.GeneratedAlert;
 import AlertList.Display;
@@ -6,6 +15,7 @@ import Alerts.Alert;
 import DTN.DTNAddressList;
 import DTN.DTNReceiver;
 import DTN.DTNSender;
+import Logger.Logger;
 import Runnables.AlertRemover;
 import Utils.AlertDurationMap;
 import Utils.Vars;
@@ -22,17 +32,25 @@ import java.util.Timer;
 public class TestClass{
     public static void main(String[] args) throws IOException, ParseException {
         int retransmissions = 5;
+
+        /* Read vehicle information from configuration file */
         Vehicle v = new Vehicle();
         v.fromFile("./src/main/resources/cardata.cfg");
 
+        /* Read lifespan of each alert type from configuration file */    
         AlertDurationMap alertDurationMap = new AlertDurationMap();
         alertDurationMap.fromFile("./src/main/resources/alerttime.cfg");
 
+        /* Two alert buffers: one for display to driver, other to store alerts generated, or received from other sources */    
         Display display = new Display();
         IncomingAlertsBuffer alertBuffer  = new IncomingAlertsBuffer();
 
+        /* Alert generator */
         AlertFactory alertFactory = new AlertFactory();
 
+        // Logger logger = new Logger();
+
+        /* Read file with cleanup timer, to remove expired alerts */
         File cleanupTimeFile = new File("./src/main/resources/alertcleanup.cfg");
         if(!cleanupTimeFile.exists()){
             System.out.println("Cleanup time file not found. Exiting...");
@@ -67,13 +85,15 @@ public class TestClass{
         Timer removerTimer = new Timer();
         removerTimer.schedule(new AlertRemover(display), cleanupPeriod, cleanupPeriod);
 
+        /* Reach all interfaces in a local link */
         InetAddress group = InetAddress.getByName("ff02::01");
 
         DTNAddressList addressList = new DTNAddressList(group);
         addressList.initialize();
 
+        /* Two objects to handle transmission and reception of alerts, each running on their respective thread */
         DTNSender sender = new DTNSender(addressList, alertBuffer);
-        DTNReceiver receiver = new DTNReceiver(addressList);
+        DTNReceiver receiver = new DTNReceiver(addressList, alertBuffer, display);
 
         Thread recvThread = new Thread(receiver);
         recvThread.start();
@@ -81,6 +101,11 @@ public class TestClass{
         Timer senderTimer = new Timer();
         senderTimer.schedule(sender, sender.getDelayInMillis(), 5000);
 
+        /**
+         *
+         * User input section. Can generate single alert, read alerts from a file, list all alerts
+         *
+         */
         BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
         String userIn;
         System.out.print(">> ");
@@ -127,7 +152,7 @@ public class TestClass{
                         if (errorMessage.toString().equals("")) {
 
                             GeneratedAlert generatedAlert;
-                            generatedAlert = alertFactory.generate(eventType, x, y, vin, detail, retransmissions);
+                            generatedAlert = alertFactory.generateFromParams(eventType, x, y, vin, detail, retransmissions);
 
                             Alert alert = generatedAlert.getAlert();
                             alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));
@@ -139,7 +164,7 @@ public class TestClass{
                             if(!display.hasAlert(alert) || !alertBuffer.hasAlert(alert)){
                                 display.addAlert(alert);
                                 alertBuffer.addAlert(alert);
-                                System.out.println("Alert added successfully: " + alert.toString());
+                                // System.out.println("Alert added successfully: " + alert.toString());
                             }
                             else
                                 System.out.println("alert already exists. ignoring...");
@@ -217,7 +242,7 @@ public class TestClass{
                                 if (errorMessage.toString().equals("")) {
 
                                     GeneratedAlert generatedAlert;
-                                    generatedAlert = alertFactory.generate(eventType, x, y, vin, detail, retransmissions);
+                                    generatedAlert = alertFactory.generateFromParams(eventType, x, y, vin, detail, retransmissions);
 
                                     Alert alert = generatedAlert.getAlert();
                                     alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));
@@ -227,7 +252,8 @@ public class TestClass{
                                     if(!display.hasAlert(alert) || !alertBuffer.hasAlert(alert)){
                                         display.addAlert(alert);
                                         alertBuffer.addAlert(alert);
-                                        System.out.println("Alert added successfully: " + alert.toString());
+                                        // logger.logGenerationSuccess(alert.toString());
+                                        //System.out.println("Alert added successfully: " + alert.toString());
                                     }
                                     else
                                         System.out.println("alert already exists. ignoring...");
@@ -244,14 +270,27 @@ public class TestClass{
         }
     }
 
+    /**
+     *
+     * Display help message when user inputs "help"
+     *
+     */
     private static void displayHelp(){
         System.out.println("########## helper menu #############\n");
     }
 
+    /**
+     * Makes sure input coordinates are within appropriate ranges
+     * For x, has to be between 0.0 and 99.9
+     * For y, has to be between 0.0 and 99.9
+     */
     private static boolean isPositionValid(double x, double y){
         return !( x > 99.9) && !(x < 0.0) && !(y > 99.9) && !(y < 0.0);
     }
 
+    /**
+     * Guarantees that the inserted detail is one of a valid group of details, and rejects all others
+     */
     private static boolean isDetailValid(String detail, String type){
         boolean valid = false;
         switch (type){

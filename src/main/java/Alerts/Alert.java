@@ -1,5 +1,6 @@
 package Alerts;
 
+import Vehicle.Vehicle;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.lang.time.DateUtils;
@@ -138,6 +139,11 @@ public abstract class Alert {
             transmittable = false;
 
         return transmittable;
+    }
+
+    public boolean isSelfGenerated(){
+        Vehicle v = Vehicle.getInstance();
+        return v.getVin() == getOriginVehicle();
     }
 
     public boolean equals(Alert a){
