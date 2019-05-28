@@ -13,6 +13,12 @@ public class Rain extends Alert {
         this.type = type;
     }
 
+    public Rain(String originVehicle, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions){
+        super(originVehicle, x, y, creationInstant, timestamp, remainingTransmissions);
+        this.setDescription(this.getClass().getSimpleName());
+        this.type = type;
+    }
+
     public Rain(Rain r){
         super(r.getOriginVehicle(), r.getX(), r.getY(), r.getCreationInstant(), r.getRemainingTransmissions());
         this.setDescription(this.getClass().getSimpleName());
@@ -45,6 +51,7 @@ public class Rain extends Alert {
                 + " " + super.getY()
                 + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
+                + " " + super.getRemainingTransmissions()
                 + " " + getType());
         return sb.toString();
     }

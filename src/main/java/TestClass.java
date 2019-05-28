@@ -6,7 +6,6 @@
  * @desc Main class for DTN application
  */
 
-
 import AlertFactory.AlertFactory;
 import AlertFactory.GeneratedAlert;
 import AlertList.Display;
@@ -15,8 +14,8 @@ import Alerts.Alert;
 import DTN.DTNAddressList;
 import DTN.DTNReceiver;
 import DTN.DTNSender;
-import Logger.Logger;
 import Runnables.AlertRemover;
+import Statistics.Statistics;
 import Utils.AlertDurationMap;
 import Utils.Vars;
 import Vehicle.Vehicle;
@@ -28,13 +27,14 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Timer;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class TestClass{
     public static void main(String[] args) throws IOException, ParseException {
         int retransmissions = 5;
 
         /* Read vehicle information from configuration file */
-        Vehicle v = new Vehicle();
+        Vehicle v = Vehicle.getInstance();
         v.fromFile("./src/main/resources/cardata.cfg");
 
         /* Read lifespan of each alert type from configuration file */    
@@ -49,6 +49,7 @@ public class TestClass{
         AlertFactory alertFactory = new AlertFactory();
 
         // Logger logger = new Logger();
+        ReentrantLock lock = new ReentrantLock();
 
         /* Read file with cleanup timer, to remove expired alerts */
         File cleanupTimeFile = new File("./src/main/resources/alertcleanup.cfg");
@@ -80,20 +81,24 @@ public class TestClass{
             return;
         }
 
+        Statistics statistics = Statistics.getInstance();
+
+
         // scheduled task to clean expired alerts from queue
         // TODO: apply concurrency control to alert list access
         Timer removerTimer = new Timer();
-        removerTimer.schedule(new AlertRemover(display), cleanupPeriod, cleanupPeriod);
+        removerTimer.schedule(new AlertRemover(display, lock), cleanupPeriod, cleanupPeriod);
 
         /* Reach all interfaces in a local link */
         InetAddress group = InetAddress.getByName("ff02::01");
 
         DTNAddressList addressList = new DTNAddressList(group);
         addressList.initialize();
+        System.out.println("valid addresses: " + addressList.getAddressList().toString());
 
         /* Two objects to handle transmission and reception of alerts, each running on their respective thread */
-        DTNSender sender = new DTNSender(addressList, alertBuffer);
-        DTNReceiver receiver = new DTNReceiver(addressList, alertBuffer, display);
+        DTNSender sender = new DTNSender(addressList, alertBuffer, lock);
+        DTNReceiver receiver = new DTNReceiver(addressList, alertBuffer, display, lock);
 
         Thread recvThread = new Thread(receiver);
         recvThread.start();
@@ -164,6 +169,7 @@ public class TestClass{
                             if(!display.hasAlert(alert) || !alertBuffer.hasAlert(alert)){
                                 display.addAlert(alert);
                                 alertBuffer.addAlert(alert);
+                                statistics.increaseGeneratedAlerts(alert.getDescription());
                                 // System.out.println("Alert added successfully: " + alert.toString());
                             }
                             else
@@ -180,7 +186,7 @@ public class TestClass{
                     break;
                 }
 
-                case "la" : {
+                case "display" : {
                     if(display.getAlertList().isEmpty()){
                         System.out.println("alert list is empty");
                     } else {
@@ -189,10 +195,56 @@ public class TestClass{
                     break;
                 }
 
-                case "sda" : {
-                    System.out.println(sender.getAlertBuffer().toString() + " " + sender.getAlertBuffer().getAlertBuffer().size());
+                case "buffer" : {
+                    System.out.println(sender.getAlertBuffer().toString());
                     break;
                 }
+
+                case "recv": {
+                    System.out.println(statistics.receivedIndividual());
+                    break;
+                }
+
+                case "recvpct" : {
+                    System.out.println(statistics.receivedPercentages());
+                    break;
+                }
+
+                case  "gen" : {
+                    System.out.println(statistics.generatedIndividual());
+                    break;
+                }
+
+                case "genpct" : {
+                    System.out.println(statistics.generatedPercentages());
+                    break;
+                }
+
+                case "trm" : {
+                    System.out.println(statistics.transmittedIndividual());
+                    break;
+                }
+
+                case "trmpct" : {
+                    System.out.println(statistics.transmittedPercentages());
+                    break;
+                }
+
+                case "alltrm" : {
+                    System.out.println("Total of alerts transmitted: " + statistics.getAlertsTransmitted());
+                    break;
+                }
+
+                case "allrecv" : {
+                    System.out.println("Total of alerts received: " + statistics.getAlertsReceived());
+                    break;
+                }
+
+                case "allgen" : {
+                    System.out.println("Total of alerts generated: " + statistics.getAlertsGenerated());
+                    break;
+                }
+
                 default: {
                     System.out.println("unknown command: " + userIn);
                 }
@@ -252,6 +304,7 @@ public class TestClass{
                                     if(!display.hasAlert(alert) || !alertBuffer.hasAlert(alert)){
                                         display.addAlert(alert);
                                         alertBuffer.addAlert(alert);
+                                        statistics.increaseGeneratedAlerts(alert.getDescription());
                                         // logger.logGenerationSuccess(alert.toString());
                                         //System.out.println("Alert added successfully: " + alert.toString());
                                     }

@@ -61,47 +61,51 @@ public class AlertFactory {
 
     public GeneratedAlert generateFromJson(JsonObject jsonObject) {
         GeneratedAlert generatedAlert = new GeneratedAlert();
-        String type = jsonObject.get("type").getAsString();
-        String vin = jsonObject.get("vin").getAsString();
+        String type = jsonObject.get("description").getAsString();
+        String vin = jsonObject.get("originVehicle").getAsString();
         double x = jsonObject.get("x").getAsDouble();
         double y = jsonObject.get("y").getAsDouble();
-        String timestamp = jsonObject.get("timestamp").getAsString();
-        String detail = jsonObject.get("detail").getAsString();
-        int retransmissions = 5;
+        String creationInstant = jsonObject.get("creationInstant").getAsString();
+        String timestamp = jsonObject.get("expirationInstant").getAsString();
+        String detail = jsonObject.get("type").getAsString();
+        int retransmissions = jsonObject.get("remainingTransmissions").getAsInt();
+
+        if(retransmissions < 1)
+            retransmissions = 5;
 
         switch (type) {
             case "RoadHole": {
-                RoadHole roadHole = new RoadHole(vin, x, y, timestamp, detail, retransmissions);
+                RoadHole roadHole = new RoadHole(vin, x, y, creationInstant, timestamp, detail, retransmissions);
                 generatedAlert.setAlert(roadHole);
                 break;
             }
             case "Crash": {
-                Crash crash = new Crash(vin, x, y, timestamp, detail, retransmissions);
+                Crash crash = new Crash(vin, x, y, creationInstant, timestamp, detail, retransmissions);
                 generatedAlert.setAlert(crash);
                 break;
             }
             case "Fog": {
-                Fog fog = new Fog(vin, x, y, timestamp, detail, retransmissions);
+                Fog fog = new Fog(vin, x, y, creationInstant, timestamp, detail, retransmissions);
                 generatedAlert.setAlert(fog);
                 break;
             }
             case "Rain": {
-                Rain rain = new Rain(vin, x, y, timestamp, detail, retransmissions);
+                Rain rain = new Rain(vin, x, y, creationInstant, timestamp, detail, retransmissions);
                 generatedAlert.setAlert(rain);
                 break;
             }
             case "RoadBlock": {
-                RoadBlock roadBlock = new RoadBlock(vin, x, y, timestamp, detail, retransmissions);
+                RoadBlock roadBlock = new RoadBlock(vin, x, y, creationInstant, timestamp, detail, retransmissions);
                 generatedAlert.setAlert(roadBlock);
                 break;
             }
             case "Snow": {
-                Snow snow = new Snow(vin, x, y, timestamp, detail, retransmissions);
+                Snow snow = new Snow(vin, x, y, creationInstant, timestamp, detail, retransmissions);
                 generatedAlert.setAlert(snow);
                 break;
             }
             case "TrafficJam": {
-                TrafficJam trafficJam = new TrafficJam(vin, x, y, timestamp, detail, retransmissions);
+                TrafficJam trafficJam = new TrafficJam(vin, x, y, creationInstant, timestamp, detail, retransmissions);
                 generatedAlert.setAlert(trafficJam);
                 break;
             }

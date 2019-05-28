@@ -2,15 +2,17 @@ package DTN;
 
 import AlertList.IncomingAlertsBuffer;
 import Alerts.Alert;
-import Logger.Logger;
+import Statistics.Statistics;
 import Utils.Vars;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.text.ParseException;
 import java.util.Random;
 import java.util.TimerTask;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class DTNSender extends TimerTask {
     private MulticastSocket multicastSocket;
@@ -20,13 +22,16 @@ public class DTNSender extends TimerTask {
     private int delayInMillis;
     private int nextAlertIndex;
 
-    public DTNSender(DTNAddressList addressList, IncomingAlertsBuffer alertBuffer) throws IOException {
+    private ReentrantLock lock;
+
+    public DTNSender(DTNAddressList addressList, IncomingAlertsBuffer alertBuffer, ReentrantLock lock) throws IOException {
         multicastSocket = new MulticastSocket();
-        port = Vars.MULTICAST_PORT_SEND;
+        port = Vars.MULTICAST_PORT;
         this.addressList = addressList;
         this.alertBuffer = alertBuffer;
         delayInMillis = new Random(System.currentTimeMillis()).nextInt(3000);
         nextAlertIndex = 0;
+        this.lock = lock;
     }
 
     public MulticastSocket getMulticastSocket() {
@@ -84,32 +89,73 @@ public class DTNSender extends TimerTask {
 
         for (InetAddress address : addressList.getAddressList()) {
             multicastSocket.setInterface(address);
+            System.out.println("sending through interface of address: " + address.toString());
             multicastSocket.send(dp);
         }
     }
 
 
     public void run() {
+        Alert nextAlert = null;
+        // check for empty buffer, if so do not even attempt to transmit
         if (alertBuffer.getAlertBuffer().size() > 0) {
-            Alert nextAlert = alertBuffer.getAlertBuffer().get(nextAlertIndex);
+            try {
+                lock.lock();
+                nextAlert = alertBuffer.getAlertBuffer().get(nextAlertIndex);
+            } finally {
+                lock.unlock();
+            }
+            // System.out.println("next alert index: " + nextAlertIndex);
+
+            // check if next alert in queue is not null
             if (nextAlert != null) {
-                try {
-                    sendSingleAlert(nextAlert);
-                    // Logger l = Logger.getInstance();
-                    // l.logTransmissionSuccess(nextAlert.toString());
-                    System.out.println("sent alert " + nextAlert.toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                try{
+                    // if next alert in transmission queue is expired, remove it from buffer and do not transmit
+                    if(nextAlert.isExpired() || !nextAlert.isTransmittable()) {
+                        System.out.println("expired alert, not transmitting...");
+                        try {
+                            lock.lock();
+                            alertBuffer.getAlertBuffer().remove(nextAlert);
+                        } finally {
+                            lock.unlock();
+                        }
+                    } else {
+                        try {
+                            // send alert
+                            sendSingleAlert(nextAlert);
+                            try {
+                                lock.lock();
+                                alertBuffer.getAlertBuffer().get(nextAlertIndex).decreaseRemainingTransmissions();
+                            } finally {
+                                lock.unlock();
+                            }
+                            // System.out.println("sent alert " + nextAlert.toString() + " to " + addressList.getGroupAddress());
+                            Statistics stats = Statistics.getInstance();
+                            stats.increaseTransmittedAlerts(nextAlert.getDescription());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                } catch (ParseException p) {
+                    System.out.println("invalid date format");
                 }
+
             } else {
                 System.out.println("could not retrieve alert with index " + nextAlertIndex + " from list. Skipping...");
             }
 
-            if (nextAlertIndex < alertBuffer.getAlertBuffer().size() - 1) {
-                nextAlertIndex++;
-            } else {
-                nextAlertIndex = 0;
+            try {
+                lock.lock();
+                if (nextAlertIndex < alertBuffer.getAlertBuffer().size() - 1) {
+                    nextAlertIndex++;
+                } else {
+                    nextAlertIndex = 0;
+                }
+            } finally {
+                lock.unlock();
             }
+
         } /*else {
             System.out.println("alert list empty, waiting for alerts...");
         }*/

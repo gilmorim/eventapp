@@ -4,26 +4,32 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class RoadHole extends Alert {
-    private String depth;
+    private String type;
 
-    public RoadHole(String originVehicle, double x, double y, String timestamp, String depth, int remainingTransmissions){
+    public RoadHole(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
         super(originVehicle, x, y, timestamp, remainingTransmissions);
-        this.depth = depth;
+        this.type = type;
+        this.setDescription(this.getClass().getSimpleName());
+    }
+
+    public RoadHole(String originVehicle, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions){
+        super(originVehicle, x, y, creationInstant, timestamp, remainingTransmissions);
+        this.type = type;
         this.setDescription(this.getClass().getSimpleName());
     }
 
     public RoadHole(RoadHole rh){
         super(rh.getOriginVehicle(), rh.getX(), rh.getY(), rh.getCreationInstant(), rh.getRemainingTransmissions());
-        depth = rh.getDepth();
+        type = rh.getType();
         this.setDescription(this.getClass().getSimpleName());
     }
 
-    public String getDepth() {
-        return depth;
+    public String getType() {
+        return type;
     }
 
-    public void setDepth(String depth) {
-        this.depth = depth;
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
@@ -44,7 +50,8 @@ public class RoadHole extends Alert {
                 + " " + super.getY()
                 + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
-                + " " + getDepth());
+                + " " + super.getRemainingTransmissions()
+                + " " + getType());
         return sb.toString();
     }
 

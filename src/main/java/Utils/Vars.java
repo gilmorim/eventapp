@@ -7,9 +7,8 @@ public class Vars {
     // DTN ERROR CODES
     public static int INVALID_MC_ADDRESS = -10;
 
-    // MULTICAST SENDING PORT
-    public static int MULTICAST_PORT_SEND = 9999;
-    public static int MULTICAST_PORT_RECEIVE = 9998;
+    // MULTICAST PORT
+    public static int MULTICAST_PORT = 9999;
 
     // ROAD HOLE DETAILS
     public static String[] CRASH_TYPES = {"single", "chain"};

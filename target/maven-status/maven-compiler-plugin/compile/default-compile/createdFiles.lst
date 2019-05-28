@@ -1,5 +1,6 @@
 Utils/Vars.class
 Command/UserInput.class
+Logger/Logger.class
 Alerts/Crash.class
 AlertFactory/AlertFactory.class
 AlertFactory/GeneratedAlert.class
@@ -11,12 +12,13 @@ Alerts/Alert.class
 Alerts/Fog.class
 Alerts/Rain.class
 DTN/DTNReceiver.class
-DTN/TestInternet.class
+AlertList/Display.class
 Alerts/RoadHole.class
 DTN/DTNAddressList.class
 TestClass.class
+Statistics/Statistics.class
 Alerts/Snow.class
 Alerts/RoadBlock.class
-AlertList/AlertList.class
 Alerts/TrafficJam.class
 Utils/TimeStamper.class
+AlertList/IncomingAlertsBuffer.class

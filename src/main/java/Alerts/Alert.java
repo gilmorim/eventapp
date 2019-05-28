@@ -32,6 +32,17 @@ public abstract class Alert {
         duration = 2880; // default value of 2 days
     }
 
+    public Alert(String originVehicle, double x, double y, String creationInstant, String expirationInstant, int remainingTransmissions){
+        this.originVehicle = originVehicle;
+        this.expirationInstant = expirationInstant;
+        this.x = x;
+        this.y = y;
+        this.creationInstant = creationInstant;
+        this.remainingTransmissions = remainingTransmissions;
+        transmissible = true;
+        duration = 2880; // default value of 2 days
+    }
+
     public double getX() {
         return x;
     }
@@ -143,7 +154,11 @@ public abstract class Alert {
 
     public boolean isSelfGenerated(){
         Vehicle v = Vehicle.getInstance();
-        return v.getVin() == getOriginVehicle();
+        System.out.println(v.getVin());
+        if(v.getVin().equals(originVehicle))
+            return true;
+
+        return false;
     }
 
     public boolean equals(Alert a){

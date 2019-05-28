@@ -7,6 +7,12 @@ public class Crash extends Alert {
 
     private String type;
 
+    public Crash(String originVehicle, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions){
+        super(originVehicle, x, y, creationInstant, timestamp, remainingTransmissions);
+        this.type = type;
+        this.setDescription(this.getClass().getSimpleName());
+    }
+
     public Crash(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
         super(originVehicle, x, y, timestamp, remainingTransmissions);
         this.type = type;
@@ -45,6 +51,7 @@ public class Crash extends Alert {
                 + " " + super.getY()
                 + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
+                + " " + super.getRemainingTransmissions()
                 + " " + getType());
         return sb.toString();
     }

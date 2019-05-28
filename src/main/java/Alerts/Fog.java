@@ -7,8 +7,14 @@ public class Fog extends Alert {
 
     String type;
 
-    public Fog(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
+    public Fog(String originVehicle, double x, double y,  String timestamp, String type, int remainingTransmissions){
         super(originVehicle, x, y, timestamp, remainingTransmissions);
+        this.setDescription(this.getClass().getSimpleName());
+        this.type = type;
+    }
+
+    public Fog(String originVehicle, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions){
+        super(originVehicle, x, y, creationInstant, timestamp, remainingTransmissions);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
@@ -45,6 +51,7 @@ public class Fog extends Alert {
                 + " " + super.getY()
                 + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
+                + " " + super.getRemainingTransmissions()
                 + " " + getType());
         return sb.toString();
     }

@@ -13,6 +13,11 @@ public class TrafficJam extends Alert {
         this.type = type;
     }
 
+    public TrafficJam(String originVehicle, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions){
+        super(originVehicle, x, y, creationInstant, timestamp, remainingTransmissions);
+        this.setDescription(this.getClass().getSimpleName());
+        this.type = type;
+    }
     public TrafficJam(TrafficJam tj){
         super(tj.getOriginVehicle(), tj.getX(), tj.getY(), tj.getCreationInstant(), tj.getRemainingTransmissions());
         this.setDescription(this.getClass().getSimpleName());
@@ -45,6 +50,7 @@ public class TrafficJam extends Alert {
                 + " " + super.getY()
                 + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
+                + " " + super.getRemainingTransmissions()
                 + " " + getType());
         return sb.toString();
     }

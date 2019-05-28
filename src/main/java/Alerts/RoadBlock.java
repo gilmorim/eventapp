@@ -13,6 +13,12 @@ public class RoadBlock extends Alert {
         this.type = type;
     }
 
+    public RoadBlock(String originVehicle, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions){
+        super(originVehicle, x, y, creationInstant, timestamp, remainingTransmissions);
+        this.setDescription(this.getClass().getSimpleName());
+        this.type = type;
+    }
+
     public RoadBlock(RoadBlock rb){
         super(rb.getOriginVehicle(), rb.getX(), rb.getY(), rb.getCreationInstant(), rb.getRemainingTransmissions());
         this.setDescription(this.getClass().getSimpleName());
@@ -45,6 +51,7 @@ public class RoadBlock extends Alert {
                 + " " + super.getY()
                 + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
+                + " " + super.getRemainingTransmissions()
                 + " " + getType());
         return sb.toString();
     }
