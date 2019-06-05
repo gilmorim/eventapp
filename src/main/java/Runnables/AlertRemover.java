@@ -17,7 +17,7 @@ public class AlertRemover extends TimerTask {
     public void run(){
         int removedAlertsCount = 0;
         try {
-            System.out.print("cleaning expired events... ");
+            // System.out.print("cleaning expired events... ");
             try {
                 lock.lock();
                 removedAlertsCount = alertList.cleanExpired();

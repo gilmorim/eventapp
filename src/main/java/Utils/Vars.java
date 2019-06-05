@@ -10,6 +10,8 @@ public class Vars {
     // MULTICAST PORT
     public static int MULTICAST_PORT = 9999;
 
+    public static boolean DEBUG_ENABLED = false;
+
     // ROAD HOLE DETAILS
     public static String[] CRASH_TYPES = {"single", "chain"};
     public static String[] FOG_TYPES = {"light", "medium", "dense"};

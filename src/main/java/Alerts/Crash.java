@@ -7,20 +7,20 @@ public class Crash extends Alert {
 
     private String type;
 
-    public Crash(String originVehicle, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions){
-        super(originVehicle, x, y, creationInstant, timestamp, remainingTransmissions);
+    public Crash(String origin, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions, String lastRetransmitter){
+        super(origin, x, y, creationInstant, timestamp, remainingTransmissions, lastRetransmitter);
         this.type = type;
         this.setDescription(this.getClass().getSimpleName());
     }
 
-    public Crash(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
-        super(originVehicle, x, y, timestamp, remainingTransmissions);
+    public Crash(String origin, double x, double y, String timestamp, String type, int remainingTransmissions, String lastRetransmitter){
+        super(origin, x, y, timestamp, remainingTransmissions, lastRetransmitter);
         this.type = type;
         this.setDescription(this.getClass().getSimpleName());
     }
 
     public Crash(Crash c){
-        super(c.getOriginVehicle(), c.getX(), c.getY(), c.getCreationInstant(), c.getRemainingTransmissions());
+        super(c.getOrigin(), c.getX(), c.getY(), c.getCreationInstant(), c.getRemainingTransmissions(), c.getLastRetransmitter());
         this.type = c.getType();
         this.setDescription(this.getClass().getSimpleName());
     }
@@ -46,10 +46,9 @@ public class Crash extends Alert {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.getDescription()
-                + " " + super.getOriginVehicle()
+                + " " + super.getOrigin()
                 + " " + super.getX()
                 + " " + super.getY()
-                + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
                 + " " + super.getRemainingTransmissions()
                 + " " + getType());

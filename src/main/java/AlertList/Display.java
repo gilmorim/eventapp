@@ -2,6 +2,10 @@ package AlertList;
 
 import Alerts.Alert;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -67,5 +71,13 @@ public class Display {
             sb.append(a.toString() + "\n");
         }
         return sb.toString();
+    }
+
+    public void appendToDisplayFile(String s) throws IOException {
+        String fileName = "currentdisplay.txt";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+        writer.append(s + '\n');
+
+        writer.close();
     }
 }

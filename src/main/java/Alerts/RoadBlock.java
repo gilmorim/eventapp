@@ -7,20 +7,20 @@ public class RoadBlock extends Alert {
 
     String type;
 
-    public RoadBlock(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
-        super(originVehicle, x, y, timestamp, remainingTransmissions);
+    public RoadBlock(String origin, double x, double y, String timestamp, String type, int remainingTransmissions, String lastRetransmitter){
+        super(origin, x, y, timestamp, remainingTransmissions, lastRetransmitter);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
 
-    public RoadBlock(String originVehicle, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions){
-        super(originVehicle, x, y, creationInstant, timestamp, remainingTransmissions);
+    public RoadBlock(String originV, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions, String lastRetransmitter){
+        super(originV, x, y, creationInstant, timestamp, remainingTransmissions, lastRetransmitter);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
 
     public RoadBlock(RoadBlock rb){
-        super(rb.getOriginVehicle(), rb.getX(), rb.getY(), rb.getCreationInstant(), rb.getRemainingTransmissions());
+        super(rb.getOrigin(), rb.getX(), rb.getY(), rb.getCreationInstant(), rb.getRemainingTransmissions(), rb.getLastRetransmitter());
         this.setDescription(this.getClass().getSimpleName());
         this.type = rb.getType();
     }
@@ -46,10 +46,9 @@ public class RoadBlock extends Alert {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.getDescription()
-                + " " + super.getOriginVehicle()
+                + " " + super.getOrigin()
                 + " " + super.getX()
                 + " " + super.getY()
-                + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
                 + " " + super.getRemainingTransmissions()
                 + " " + getType());

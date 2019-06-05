@@ -11,6 +11,10 @@ public class Vehicle {
     private String model;
     private int year;
 
+    private String currentRsu;
+    private double currentX;
+    private double currentY;
+
     private static Vehicle vehicle = null;
 
     public Vehicle(){
@@ -20,11 +24,13 @@ public class Vehicle {
         this.year = 1800;
     }
 
-    public Vehicle(String vin, String brand, String model, int year){
+    public Vehicle(String vin, String brand, String model, int year, double currentX, double currentY){
         this.vin = vin;
         this.brand = brand;
         this.model = model;
         this.year = year;
+        this.currentX = currentX;
+        this.currentY = currentY;
     }
 
     public Vehicle(Vehicle v){
@@ -32,6 +38,8 @@ public class Vehicle {
         this.brand = v.getBrand();
         this.model = v.getModel();
         this.year = v.getYear();
+        this.currentX = v.getCurrentX();
+        this.currentY = v.getCurrentY();
     }
 
     public String getVin() {
@@ -66,6 +74,30 @@ public class Vehicle {
         this.year = year;
     }
 
+    public String getCurrentRsu() {
+        return currentRsu;
+    }
+
+    public void setCurrentRsu(String currentRsu) {
+        this.currentRsu = currentRsu;
+    }
+
+    public double getCurrentX() {
+        return currentX;
+    }
+
+    public void setCurrentX(double currentX) {
+        this.currentX = currentX;
+    }
+
+    public double getCurrentY() {
+        return currentY;
+    }
+
+    public void setCurrentY(double currentY) {
+        this.currentY = currentY;
+    }
+
     //TODO: proper file reading verification
     public void fromFile(String file) {
         String[] carDetails;
@@ -80,6 +112,8 @@ public class Vehicle {
             this.setModel(carDetails[1]);
             this.setVin(carDetails[2]);
             this.setYear(Integer.parseInt(carDetails[3]));
+            this.setCurrentX(Double.parseDouble(carDetails[4]));
+            this.setCurrentY(Double.parseDouble(carDetails[5]));
 
         } catch (FileNotFoundException e) {
             System.out.println("configuration file not found");
@@ -98,7 +132,7 @@ public class Vehicle {
 
     @Override
     public String toString(){
-        return vin + " " + brand + " " + model + " " + year;
+        return vin + " " + brand + " " + model + " " + year + " " + currentX + " " + currentY;
     }
 
     @Override

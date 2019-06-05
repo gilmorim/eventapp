@@ -35,11 +35,11 @@ public class TestClass{
 
         /* Read vehicle information from configuration file */
         Vehicle v = Vehicle.getInstance();
-        v.fromFile("./src/main/resources/cardata.cfg");
+        v.fromFile("cardata.cfg");
 
         /* Read lifespan of each alert type from configuration file */    
         AlertDurationMap alertDurationMap = new AlertDurationMap();
-        alertDurationMap.fromFile("./src/main/resources/alerttime.cfg");
+        alertDurationMap.fromFile("alerttime.cfg");
 
         /* Two alert buffers: one for display to driver, other to store alerts generated, or received from other sources */    
         Display display = new Display();
@@ -52,7 +52,7 @@ public class TestClass{
         ReentrantLock lock = new ReentrantLock();
 
         /* Read file with cleanup timer, to remove expired alerts */
-        File cleanupTimeFile = new File("./src/main/resources/alertcleanup.cfg");
+        File cleanupTimeFile = new File("alertcleanup.cfg");
         if(!cleanupTimeFile.exists()){
             System.out.println("Cleanup time file not found. Exiting...");
             return;
@@ -94,14 +94,12 @@ public class TestClass{
 
         DTNAddressList addressList = new DTNAddressList(group);
         addressList.initialize();
-        System.out.println("valid addresses: " + addressList.getAddressList().toString());
+        // System.out.println("valid addresses: " + addressList.getAddressList().toString());
 
         /* Two objects to handle transmission and reception of alerts, each running on their respective thread */
         DTNSender sender = new DTNSender(addressList, alertBuffer, lock);
         DTNReceiver receiver = new DTNReceiver(addressList, alertBuffer, display, lock);
-
-        Thread recvThread = new Thread(receiver);
-        recvThread.start();
+        receiver.start();
 
         Timer senderTimer = new Timer();
         senderTimer.schedule(sender, sender.getDelayInMillis(), 5000);
@@ -113,6 +111,7 @@ public class TestClass{
          */
         BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
         String userIn;
+        System.out.println("Welcome to the event app generator. Type \"help\"  to display usage instructions and examples\n");
         System.out.print(">> ");
 
         // TODO: add error codes
@@ -125,39 +124,33 @@ public class TestClass{
                     break;
                 }
 
+                case "at" : {
+                    if(options.length < 3) {
+                        System.out.println("not enough arguments for at option");
+                    } else {
+                        v.setCurrentX(Double.parseDouble(options[1]));
+                        v.setCurrentY(Double.parseDouble(options[2]));
+                    }
+                    break;
+                }
+
                 // TODO: this probably can be done better
                 // generate alert
                 case "alert" : {
-                    if(options.length < 5) {
+                    if(options.length < 3) {
                         System.out.println("not enough arguments for alert option");
                     } else {
 
                         StringBuilder errorMessage = new StringBuilder();
-                        double x, y;
 
-                        try {
-                            x = Double.parseDouble(options[2]);
-                            y = Double.parseDouble(options[3]);
-                        } catch (NumberFormatException e){
-                            System.out.println("error creating alert: invalid position");
-                            break;
-                        }
                         String eventType = options[1];
                         String vin = v.getVin();
-                        String detail = options[4];
-
-                        if(!isPositionValid(x, y)){
-                            errorMessage.append("invalid position; ") ;
-                        }
-
-                        if(!isDetailValid(detail, eventType)){
-                            errorMessage.append("invalid detail");
-                        }
+                        String detail = options[2];
 
                         if (errorMessage.toString().equals("")) {
 
                             GeneratedAlert generatedAlert;
-                            generatedAlert = alertFactory.generateFromParams(eventType, x, y, vin, detail, retransmissions);
+                            generatedAlert = alertFactory.generateFromParams(eventType, v.getCurrentX(), v.getCurrentY(), vin, detail, retransmissions, vin);
 
                             Alert alert = generatedAlert.getAlert();
                             alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));
@@ -168,6 +161,7 @@ public class TestClass{
                             // filter repeated alerts
                             if(!display.hasAlert(alert) || !alertBuffer.hasAlert(alert)){
                                 display.addAlert(alert);
+                                display.appendToDisplayFile(alert.toString());
                                 alertBuffer.addAlert(alert);
                                 statistics.increaseGeneratedAlerts(alert.getDescription());
                                 // System.out.println("Alert added successfully: " + alert.toString());
@@ -245,9 +239,7 @@ public class TestClass{
                     break;
                 }
 
-                default: {
-                    System.out.println("unknown command: " + userIn);
-                }
+
 
                 // TODO: duplicate code here, find way to recycle earlier code
                 // read alerts from file instead of standard input
@@ -256,9 +248,10 @@ public class TestClass{
                         System.out.println("insufficient arguments for rdfile option");
                     } else {
                         String line;
-                        String path = "./src/main/resources/" + options[1];
+                        String path = options[1];
                         double x, y;
                         BufferedReader reader = Files.newBufferedReader(Paths.get(path));
+
                         int lineNumber = 0;
                         while((line = reader.readLine()) != null){
                             StringBuilder errorMessage = new StringBuilder();
@@ -267,34 +260,19 @@ public class TestClass{
                             // comment or empty line support
                             if(words[0].charAt(0) == '#' || words[0].charAt(0) == '\n')
                                 continue;
-                            if(words.length < 4){
+                            if(words.length < 2){
                                 System.out.println("invalid line " + lineNumber +  ": " + line + " - not enough arguments. Skipping...");
                             } else {
 
-                                try {
-                                    x = Double.parseDouble(words[1]);
-                                    y = Double.parseDouble(words[2]);
-                                } catch (NumberFormatException e){
-                                    System.out.println("error creating alert: invalid position");
-                                    break;
-                                }
-
                                 String eventType = words[0];
                                 String vin = v.getVin();
-                                String detail = words[3];
+                                String detail = words[1];
 
-                                if(!isPositionValid(x, y)){
-                                    errorMessage.append("invalid position; ") ;
-                                }
-
-                                if(!isDetailValid(detail, eventType)){
-                                    errorMessage.append("invalid detail " + detail);
-                                }
 
                                 if (errorMessage.toString().equals("")) {
 
                                     GeneratedAlert generatedAlert;
-                                    generatedAlert = alertFactory.generateFromParams(eventType, x, y, vin, detail, retransmissions);
+                                    generatedAlert = alertFactory.generateFromParams(eventType, v.getCurrentX(), v.getCurrentY(), vin, detail, retransmissions, vin);
 
                                     Alert alert = generatedAlert.getAlert();
                                     alert.setDuration(alertDurationMap.durationByAlertType(alert.getClass().getSimpleName()));
@@ -303,6 +281,7 @@ public class TestClass{
                                     // filter repeated alerts
                                     if(!display.hasAlert(alert) || !alertBuffer.hasAlert(alert)){
                                         display.addAlert(alert);
+                                        display.appendToDisplayFile(alert.toString());
                                         alertBuffer.addAlert(alert);
                                         statistics.increaseGeneratedAlerts(alert.getDescription());
                                         // logger.logGenerationSuccess(alert.toString());
@@ -318,9 +297,36 @@ public class TestClass{
                     }
                     break;
                 }
+
+                case "db" : {
+                    Vars.DEBUG_ENABLED = true;
+                    break;
+                }
+
+                case "ndb" : {
+                    Vars.DEBUG_ENABLED = false;
+                    break;
+                }
+
+                default: {
+                    System.out.println("unknown command: " + userIn);
+                    break;
+                }
             }
             System.out.print(">> ");
         }
+
+
+        removerTimer.cancel();
+        removerTimer.purge();
+
+        senderTimer.cancel();
+        senderTimer.purge();
+
+        receiver.interrupt();
+        // receiver.stop();
+
+        System.out.println("exiting...");
     }
 
     /**
@@ -329,7 +335,36 @@ public class TestClass{
      *
      */
     private static void displayHelp(){
-        System.out.println("########## helper menu #############\n");
+        System.out.println("###### EventApp Usage ###### \n" +
+                "***** Alert creation:\n" +
+                "\tSingle alert:\n\talert [OCCURRENCE OPTION] [TYPE]\n\n" +
+                "\t\t\tOCCURRENCES\tOPTION\tTYPE\n" +
+                "\t\t\tRoadHole\t-h\t\tlight, medium, rough\n" +
+                "\t\t\tCrash\t\t-c\t\tsingle, chain\n" +
+                "\t\t\tFog\t\t\t-f\t\tlight, medium, dense\n" +
+                "\t\t\tRain\t\t-r\t\tlight, medium, pouring\n" +
+                "\t\t\tRoadBlock\t-b\t\tobject, authority\n" +
+                "\t\t\tSnow\t\t-s\t\tlight, medium, heavy\n" +
+                "\t\t\tTrafficJam\t-t\t\tshort, medium, long\n\n" +
+                "\t\t\tExample usage:\talert -h medium\n\n" +
+
+                "\tFrom file:\trdfile [FILE]\n" +
+                "\tExample usage:\trdfile alerts.txt\n\n" +
+
+                "***** Display:\n" +
+                "\tdisplay\t\tPrints active alerts\n" +
+                "\tbuffer\t\tPrints transmission buffer content\n\n" +
+
+                "***** Statistics:\n" +
+                "\trecv\t\tPrints received alerts by type\n" +
+                "\trecvpct\t\tPrints received alerts by type in percentage\n" +
+                "\tallrecv\t\tPrints total number of received alerts\n" +
+                "\tgen\t\t\tPrints generated alerts by type\n" +
+                "\tgenpct\t\tPrints generated alerts by type in percentage\n" +
+                "\tallgen\t\tPrints total number of generated alerts\n" +
+                "\ttrm\t\t\tPrints transmitted alerts by type\n" +
+                "\ttrmpct\t\tPrints transmitted alerts by type in percentage\n" +
+                "\talltrm\t\tPrints total number of transmitted alerts\n");
     }
 
     /**

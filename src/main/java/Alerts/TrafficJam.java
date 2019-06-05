@@ -7,19 +7,19 @@ public class TrafficJam extends Alert {
 
     String type;
 
-    public TrafficJam(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
-        super(originVehicle, x, y, timestamp, remainingTransmissions);
+    public TrafficJam(String origin, double x, double y, String timestamp, String type, int remainingTransmissions, String lastRetransmitter){
+        super(origin, x, y, timestamp, remainingTransmissions, lastRetransmitter);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
 
-    public TrafficJam(String originVehicle, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions){
-        super(originVehicle, x, y, creationInstant, timestamp, remainingTransmissions);
+    public TrafficJam(String origin, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions, String lastRetransmitter){
+        super(origin, x, y, creationInstant, timestamp, remainingTransmissions, lastRetransmitter);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
     public TrafficJam(TrafficJam tj){
-        super(tj.getOriginVehicle(), tj.getX(), tj.getY(), tj.getCreationInstant(), tj.getRemainingTransmissions());
+        super(tj.getOrigin(), tj.getX(), tj.getY(), tj.getCreationInstant(), tj.getRemainingTransmissions(), tj.getLastRetransmitter());
         this.setDescription(this.getClass().getSimpleName());
         this.type = tj.getType();
     }
@@ -45,10 +45,9 @@ public class TrafficJam extends Alert {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.getDescription()
-                + " " + super.getOriginVehicle()
+                + " " + super.getOrigin()
                 + " " + super.getX()
                 + " " + super.getY()
-                + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
                 + " " + super.getRemainingTransmissions()
                 + " " + getType());

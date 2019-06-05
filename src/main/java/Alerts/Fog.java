@@ -7,20 +7,20 @@ public class Fog extends Alert {
 
     String type;
 
-    public Fog(String originVehicle, double x, double y,  String timestamp, String type, int remainingTransmissions){
-        super(originVehicle, x, y, timestamp, remainingTransmissions);
+    public Fog(String origin, double x, double y,  String timestamp, String type, int remainingTransmissions, String lastRetransmitter){
+        super(origin, x, y, timestamp, remainingTransmissions, lastRetransmitter);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
 
-    public Fog(String originVehicle, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions){
-        super(originVehicle, x, y, creationInstant, timestamp, remainingTransmissions);
+    public Fog(String origin, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions, String lastRetransmitter){
+        super(origin, x, y, creationInstant, timestamp, remainingTransmissions, lastRetransmitter);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
 
     public Fog(Fog f){
-        super(f.getOriginVehicle(), f.getX(), f.getY(), f.getCreationInstant(), f.getRemainingTransmissions());
+        super(f.getOrigin(), f.getX(), f.getY(), f.getCreationInstant(), f.getRemainingTransmissions(), f.getLastRetransmitter());
         this.setDescription(this.getClass().getSimpleName());
         this.type = f.getType();
     }
@@ -46,10 +46,9 @@ public class Fog extends Alert {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.getDescription()
-                + " " + super.getOriginVehicle()
+                + " " + super.getOrigin()
                 + " " + super.getX()
                 + " " + super.getY()
-                + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
                 + " " + super.getRemainingTransmissions()
                 + " " + getType());

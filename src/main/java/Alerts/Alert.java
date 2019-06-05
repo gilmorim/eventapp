@@ -1,10 +1,13 @@
 package Alerts;
 
 import Vehicle.Vehicle;
+import com.google.common.net.InetAddresses;
+import com.google.common.net.InternetDomainName;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.lang.time.DateUtils;
 
+import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,26 +22,29 @@ public abstract class Alert {
     private String description;
     private int duration;
     private int remainingTransmissions;
-    private String originVehicle;
+    private String lastRetransmitter;
+    private String origin;
     private boolean transmissible;
 
-    public Alert(String originVehicle, double x, double y, String creationInstant, int remainingTransmissions){
-        this.originVehicle = originVehicle;
+    public Alert(String origin, double x, double y, String creationInstant, int remainingTransmissions, String lastRetransmitter){
+        this.origin = origin;
         this.x = x;
         this.y = y;
         this.creationInstant = creationInstant;
         this.remainingTransmissions = remainingTransmissions;
+        this.lastRetransmitter = lastRetransmitter;
         transmissible = true;
         duration = 2880; // default value of 2 days
     }
 
-    public Alert(String originVehicle, double x, double y, String creationInstant, String expirationInstant, int remainingTransmissions){
-        this.originVehicle = originVehicle;
+    public Alert(String origin, double x, double y, String creationInstant, String expirationInstant, int remainingTransmissions, String lastRetransmitter){
+        this.origin = origin;
         this.expirationInstant = expirationInstant;
         this.x = x;
         this.y = y;
         this.creationInstant = creationInstant;
         this.remainingTransmissions = remainingTransmissions;
+        this.lastRetransmitter = lastRetransmitter;
         transmissible = true;
         duration = 2880; // default value of 2 days
     }
@@ -103,6 +109,14 @@ public abstract class Alert {
         this.transmissible = transmissible;
     }
 
+    public String getLastRetransmitter() {
+        return lastRetransmitter;
+    }
+
+    public void setLastRetransmitter(String lastRetransmitter) {
+        this.lastRetransmitter = lastRetransmitter;
+    }
+
     // TODO: SPAGHET CODE, THINK A BETTER WAY TO DO THIS
     public void setExpirationInstant() throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -115,12 +129,12 @@ public abstract class Alert {
         this.expirationInstant = expirationInstant;
     }
 
-    public String getOriginVehicle() {
-        return originVehicle;
+    public String getOrigin() {
+        return origin;
     }
 
-    public void setOriginVehicle(String originVehicle) {
-        this.originVehicle = originVehicle;
+    public void setOrigin(String origin) {
+        this.origin = origin;
     }
 
 
@@ -154,11 +168,20 @@ public abstract class Alert {
 
     public boolean isSelfGenerated(){
         Vehicle v = Vehicle.getInstance();
-        System.out.println(v.getVin());
-        if(v.getVin().equals(originVehicle))
+        // System.out.println(v.getVin());
+        if(v.getVin().equals(origin))
             return true;
 
         return false;
+    }
+
+    // If origin is an IP address, it means it is RSU generated
+    public boolean isRsuGenerated(){
+        return InetAddresses.isInetAddress(origin);
+    }
+
+    public boolean isRsuRetransmitted(){
+        return InetAddresses.isInetAddress(lastRetransmitter);
     }
 
     public boolean equals(Alert a){

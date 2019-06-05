@@ -1,0 +1,8 @@
+-h light
+-h rough
+-c chain
+-f dense
+-r pouring
+-t long
+-b authority
+-b authority

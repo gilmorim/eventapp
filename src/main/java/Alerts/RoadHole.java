@@ -6,20 +6,20 @@ import com.google.gson.GsonBuilder;
 public class RoadHole extends Alert {
     private String type;
 
-    public RoadHole(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
-        super(originVehicle, x, y, timestamp, remainingTransmissions);
+    public RoadHole(String origin, double x, double y, String timestamp, String type, int remainingTransmissions, String lastRetransmitter){
+        super(origin, x, y, timestamp, remainingTransmissions, lastRetransmitter);
         this.type = type;
         this.setDescription(this.getClass().getSimpleName());
     }
 
-    public RoadHole(String originVehicle, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions){
-        super(originVehicle, x, y, creationInstant, timestamp, remainingTransmissions);
+    public RoadHole(String origin, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions, String lastRetransmitter){
+        super(origin, x, y, creationInstant, timestamp, remainingTransmissions, lastRetransmitter);
         this.type = type;
         this.setDescription(this.getClass().getSimpleName());
     }
 
     public RoadHole(RoadHole rh){
-        super(rh.getOriginVehicle(), rh.getX(), rh.getY(), rh.getCreationInstant(), rh.getRemainingTransmissions());
+        super(rh.getOrigin(), rh.getX(), rh.getY(), rh.getCreationInstant(), rh.getRemainingTransmissions(), rh.getLastRetransmitter());
         type = rh.getType();
         this.setDescription(this.getClass().getSimpleName());
     }
@@ -45,10 +45,9 @@ public class RoadHole extends Alert {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.getDescription()
-                + " " + super.getOriginVehicle()
+                + " " + super.getOrigin()
                 + " " + super.getX()
                 + " " + super.getY()
-                + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
                 + " " + super.getRemainingTransmissions()
                 + " " + getType());

@@ -7,20 +7,20 @@ public class Rain extends Alert {
 
     String type;
 
-    public Rain(String originVehicle, double x, double y, String timestamp, String type, int remainingTransmissions){
-        super(originVehicle, x, y, timestamp, remainingTransmissions);
+    public Rain(String origin, double x, double y, String timestamp, String type, int remainingTransmissions, String lastRetransmitter){
+        super(origin, x, y, timestamp, remainingTransmissions, lastRetransmitter);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
 
-    public Rain(String originVehicle, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions){
-        super(originVehicle, x, y, creationInstant, timestamp, remainingTransmissions);
+    public Rain(String origin, double x, double y, String creationInstant, String timestamp, String type, int remainingTransmissions, String lastRetransmitter){
+        super(origin, x, y, creationInstant, timestamp, remainingTransmissions, lastRetransmitter);
         this.setDescription(this.getClass().getSimpleName());
         this.type = type;
     }
 
     public Rain(Rain r){
-        super(r.getOriginVehicle(), r.getX(), r.getY(), r.getCreationInstant(), r.getRemainingTransmissions());
+        super(r.getOrigin(), r.getX(), r.getY(), r.getCreationInstant(), r.getRemainingTransmissions(), r.getLastRetransmitter());
         this.setDescription(this.getClass().getSimpleName());
         this.type = r.getType();
     }
@@ -46,10 +46,9 @@ public class Rain extends Alert {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.getDescription()
-                + " " + super.getOriginVehicle()
+                + " " + super.getOrigin()
                 + " " + super.getX()
                 + " " + super.getY()
-                + " " + super.getCreationInstant()
                 + " " + super.getExpirationInstant()
                 + " " + super.getRemainingTransmissions()
                 + " " + getType());

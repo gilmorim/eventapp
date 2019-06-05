@@ -4,6 +4,7 @@ import AlertList.IncomingAlertsBuffer;
 import Alerts.Alert;
 import Statistics.Statistics;
 import Utils.Vars;
+import Vehicle.Vehicle;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -89,14 +90,17 @@ public class DTNSender extends TimerTask {
 
         for (InetAddress address : addressList.getAddressList()) {
             multicastSocket.setInterface(address);
-            System.out.println("sending through interface of address: " + address.toString());
+
+            if(Vars.DEBUG_ENABLED) System.out.println("sending through interface of address: " + address.toString());
+
             multicastSocket.send(dp);
         }
     }
 
 
     public void run() {
-        Alert nextAlert = null;
+        Alert nextAlert;
+        Vehicle v = Vehicle.getInstance();
         // check for empty buffer, if so do not even attempt to transmit
         if (alertBuffer.getAlertBuffer().size() > 0) {
             try {
@@ -105,14 +109,17 @@ public class DTNSender extends TimerTask {
             } finally {
                 lock.unlock();
             }
-            // System.out.println("next alert index: " + nextAlertIndex);
+
+            if(Vars.DEBUG_ENABLED) System.out.println("NEXT ALERT INDEX: " + nextAlertIndex);
 
             // check if next alert in queue is not null
             if (nextAlert != null) {
                 try{
                     // if next alert in transmission queue is expired, remove it from buffer and do not transmit
                     if(nextAlert.isExpired() || !nextAlert.isTransmittable()) {
-                        System.out.println("expired alert, not transmitting...");
+
+                        if(Vars.DEBUG_ENABLED) System.out.println("expired alert, not transmitting...");
+
                         try {
                             lock.lock();
                             alertBuffer.getAlertBuffer().remove(nextAlert);
@@ -122,16 +129,20 @@ public class DTNSender extends TimerTask {
                     } else {
                         try {
                             // send alert
+                            nextAlert.setLastRetransmitter(v.getVin());
                             sendSingleAlert(nextAlert);
+                            // System.out.println("sent: " + nextAlert.toJson());
                             try {
                                 lock.lock();
                                 alertBuffer.getAlertBuffer().get(nextAlertIndex).decreaseRemainingTransmissions();
                             } finally {
                                 lock.unlock();
                             }
-                            // System.out.println("sent alert " + nextAlert.toString() + " to " + addressList.getGroupAddress());
                             Statistics stats = Statistics.getInstance();
                             stats.increaseTransmittedAlerts(nextAlert.getDescription());
+
+                            if(Vars.DEBUG_ENABLED) System.out.println("SENT ALERT: " +  nextAlert.toJson());
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

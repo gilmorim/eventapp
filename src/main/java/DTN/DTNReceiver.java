@@ -7,12 +7,14 @@ import AlertList.IncomingAlertsBuffer;
 import Alerts.Alert;
 import Statistics.Statistics;
 import Utils.Vars;
+import com.google.errorprone.annotations.Var;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.MulticastSocket;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class DTNReceiver implements Runnable{
@@ -20,10 +22,13 @@ public class DTNReceiver implements Runnable{
     private MulticastSocket multicastSocket;
     private int port;
     private DTNAddressList addressList;
-    IncomingAlertsBuffer alertsBuffer;
-    Display display;
+    private IncomingAlertsBuffer alertsBuffer;
+    private Display display;
 
-    ReentrantLock lock;
+    AtomicBoolean running = new AtomicBoolean(false);
+    Thread receiver;
+
+    private ReentrantLock lock;
 
     public DTNReceiver(DTNAddressList addressList, IncomingAlertsBuffer alertsBuffer, Display display, ReentrantLock lock) throws IOException{
         port = Vars.MULTICAST_PORT;
@@ -66,55 +71,87 @@ public class DTNReceiver implements Runnable{
         this.alertsBuffer = alertsBuffer;
     }
 
+    public void start(){
+        receiver = new Thread(this);
+        receiver.start();
+    }
+
+    public void stop(){
+        running.set(false);
+    }
+
+    public void interrupt(){
+        running.set(false);
+        receiver.interrupt();
+    }
+
     @Override
     public void run() {
-        System.out.println("listening for incoming packets...");
+        // System.out.println("listening for incoming packets...");
+        running.set(true);
+
         try {
             multicastSocket.joinGroup(addressList.getGroupAddress());
-            System.out.println("joined multicast group " + addressList.getGroupAddress());
         } catch (IOException e) {
             System.out.println("failed to join multicast group " + addressList.getGroupAddress());
             e.printStackTrace();
         }
-        byte[] buffer = new byte[8192];
 
-        while (true){
-            DatagramPacket dp = new DatagramPacket(buffer, buffer.length);
-            try {
-                multicastSocket.receive(dp);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String s = new String(dp.getData(), 0, dp.getLength());
-            String receivedAddress = dp.getAddress().toString();
-            //System.out.println("Receive message " + s + " from " + receivedAddress);
+        try {
+            byte[] buffer = new byte[8192];
 
-            Gson gson = new Gson();
-            JsonObject jo = gson.fromJson(s, JsonObject.class);
-
-
-            AlertFactory alertFactory = new AlertFactory();
-            GeneratedAlert generatedAlert = alertFactory.generateFromJson(jo);
-            Alert a = generatedAlert.getAlert();;
-
-            if(alertsBuffer.hasAlert(a) || display.hasAlert(a) || a.isSelfGenerated()){
-                System.out.println("redundant alert, ignoring...");
-            } else {
+            while (running.get()){
+                Thread.sleep(100);
+                DatagramPacket dp = new DatagramPacket(buffer, buffer.length);
                 try {
-                    Statistics stats = Statistics.getInstance();
-                    stats.increaseReceivedAlerts(a.getDescription());
+                    multicastSocket.receive(dp);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                String s = new String(dp.getData(), 0, dp.getLength());
+                String receivedAddress = dp.getAddress().toString();
 
-                try {
-                    lock.lock();
-                    display.addAlert(a);
-                    alertsBuffer.addAlert(a);
-                } finally {
-                    lock.unlock();
+                if(Vars.DEBUG_ENABLED) System.out.println("RECEIVED DATA FROM ADDRESS: " + receivedAddress);
+
+                Gson gson = new Gson();
+                JsonObject jo = gson.fromJson(s, JsonObject.class);
+
+                if(Vars.DEBUG_ENABLED) System.out.println("RECEIVER JSON DATA: " + jo.toString());
+
+
+                AlertFactory alertFactory = new AlertFactory();
+                GeneratedAlert generatedAlert = alertFactory.generateFromJson(jo);
+                Alert a = generatedAlert.getAlert();
+
+                if (!alertsBuffer.hasAlert(a) && !display.hasAlert(a) && !a.isSelfGenerated()) {
+                    try {
+                        Statistics stats = Statistics.getInstance();
+                        stats.increaseReceivedAlerts(a.getDescription());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        lock.lock();
+                        display.addAlert(a);
+                        display.appendToDisplayFile(a.toString());
+
+                        if(!a.isRsuGenerated() || !a.isRsuRetransmitted())
+                            alertsBuffer.addAlert(a);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        lock.unlock();
+                    }
+
                 }
             }
+
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.out.println("Receiver interrupted");
         }
+        System.out.println("terminating receiver...");
     }
 }
