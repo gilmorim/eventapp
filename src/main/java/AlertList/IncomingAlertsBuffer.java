@@ -45,4 +45,8 @@ public class IncomingAlertsBuffer {
         }
         return sb.toString();
     }
+
+    public void wipe(){
+        alertBuffer.clear();
+    }
 }

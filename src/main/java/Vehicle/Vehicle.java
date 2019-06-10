@@ -132,7 +132,7 @@ public class Vehicle {
 
     @Override
     public String toString(){
-        return vin + " " + brand + " " + model + " " + year + " " + currentX + " " + currentY;
+        return vin + " " + brand + " " + model + " " + year + " " + currentX + " " + currentY + " " + currentRsu;
     }
 
     @Override

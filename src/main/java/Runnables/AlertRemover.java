@@ -1,6 +1,7 @@
 package Runnables;
 
 import AlertList.Display;
+import Utils.Vars;
 
 import java.text.ParseException;
 import java.util.TimerTask;
@@ -24,7 +25,7 @@ public class AlertRemover extends TimerTask {
             } finally {
                 lock.unlock();
             }
-            System.out.println("removed " + removedAlertsCount + " alerts");
+            if ( Vars.DEBUG_ENABLED) System.out.println("removed " + removedAlertsCount + " alerts");
         } catch (ParseException e) {
             e.printStackTrace();
         }

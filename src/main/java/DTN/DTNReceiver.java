@@ -7,6 +7,8 @@ import AlertList.IncomingAlertsBuffer;
 import Alerts.Alert;
 import Statistics.Statistics;
 import Utils.Vars;
+import Vehicle.Vehicle;
+import com.google.common.net.InetAddresses;
 import com.google.errorprone.annotations.Var;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -87,6 +89,7 @@ public class DTNReceiver implements Runnable{
 
     @Override
     public void run() {
+        Vehicle v = Vehicle.getInstance();
         // System.out.println("listening for incoming packets...");
         running.set(true);
 
@@ -122,6 +125,30 @@ public class DTNReceiver implements Runnable{
                 AlertFactory alertFactory = new AlertFactory();
                 GeneratedAlert generatedAlert = alertFactory.generateFromJson(jo);
                 Alert a = generatedAlert.getAlert();
+
+                String origin = a.getOrigin();
+                String lastRetransmitter = a.getLastRetransmitter();
+
+                if(InetAddresses.isInetAddress(origin) || InetAddresses.isInetAddress(lastRetransmitter)) {
+                    if(v.getCurrentRsu() == null){
+
+                        if(InetAddresses.isInetAddress(lastRetransmitter)){
+                            v.setCurrentRsu(lastRetransmitter);
+                        } else if(InetAddresses.isInetAddress(origin)) {
+                            v.setCurrentRsu(origin);
+                        }
+                    } else {
+                        if(v.getCurrentRsu().equals(origin) || v.getCurrentRsu().equals(lastRetransmitter)){
+                            if(InetAddresses.isInetAddress(lastRetransmitter)){
+                                v.setCurrentRsu(lastRetransmitter);
+                            } else if(InetAddresses.isInetAddress(origin)) {
+                                v.setCurrentRsu(origin);
+                            }
+                            display.wipe();
+                            alertsBuffer.wipe();
+                        }
+                    }
+                }
 
                 if (!alertsBuffer.hasAlert(a) && !display.hasAlert(a) && !a.isSelfGenerated()) {
                     try {

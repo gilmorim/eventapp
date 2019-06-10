@@ -80,4 +80,8 @@ public class Display {
 
         writer.close();
     }
+
+    public void wipe(){
+        alertList.clear();
+    }
 }
